@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<title>Moonlight v1.2</title>
+<link href="styles.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="favicon.ico">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
+</head>
+<body>
+<div class="header">
+<h1>Moonlight Setup</h1><p>v1.2</p>
+</div>
+<div class="content">
+<br>
+<div class="subheader"><h2>LED Color</h2></div>
+<br>
+<div class="slidecontainer">
+  <input type="range" min="1" max="8000" value="50" class="slider" id="sliderRed"> 
+  <p class="redpreview">Red: <span id="valueRed"></span></p>
+    <input type="range" min="1" max="8000" value="50" class="slider" id="sliderGreen"> 
+  <p class="greenpreview">Green: <span id="valueGreen"></span></p>
+    <input type="range" min="1" max="8000" value="50" class="slider" id="sliderBlue"> 
+  <p class="bluepreview">Blue: <span id="valueBlue"></span></p>
+      <input type="range" min="1" max="8000" value="50" class="slider" id="sliderWhite"> 
+  <p class="whitepreview">White: <span id="valueWhite"></span></p>
+</div>
+<br>
+<div class="subheader"><h2>Duration</h2></div>
+<br>
+<div class="slidecontainer">
+  <input type="range" min="1" max="600" value="10" class="slider" id="sliderDuration"> 
+  <p class="durationpreview">Time in seconds: <span id="valueDuration"></span></p>
+    
+</div>
+<br>
+<div class="subheader"><h2>Fade in duration</h2></div>
+<br>
+<div class="slidecontainer">
+  <input type="range" min="1" max="15" value="2" class="slider" id="sliderFadeIn"> 
+  <p class="fadeinpreview">Time in seconds: <span id="valueFadeIn"></span></p>
+    
+</div>
+<br>
+<div class="subheader"><h2>Fade out duration</h2></div>
+<br>
+<div class="slidecontainer">
+  <input type="range" min="1" max="15" value="2" class="slider" id="sliderFadeOut"> 
+  <p class="fadeoutpreview">Time in seconds: <span id="valueFadeOut"></span></p>
+    
+</div>
+
+</div>
+
+<script>
+
+LEDset = function() {
+
+
+var RedPWM = Number(document.getElementById("sliderRed").value);
+var GreenPWM = Number(document.getElementById("sliderGreen").value);
+var BluePWM = Number(document.getElementById("sliderBlue").value);
+var WhitePWM = Number(document.getElementById("sliderWhite").value);
+var DurationValue = Number(document.getElementById("sliderDuration").value);
+var FadeInValue = Number(document.getElementById("sliderFadeIn").value);
+var FadeOutValue = Number(document.getElementById("sliderFadeOut").value);
+
+
+    $.ajax({
+        url: "/api/v1/light/brightness",
+        type: "POST",
+        data: JSON.stringify({ 
+			red: RedPWM, 
+			green: GreenPWM, 
+			blue: BluePWM,
+			white: WhitePWM,
+			duration: DurationValue,
+			fadein: FadeInValue,
+			fadeout: FadeOutValue}),
+        dataType: "json",
+
+    });
+};
+
+
+
+var sliderRed = document.getElementById("sliderRed");
+var redValue = document.getElementById("valueRed");
+var sliderGreen = document.getElementById("sliderGreen");
+var greenValue = document.getElementById("valueGreen");
+var sliderBlue = document.getElementById("sliderBlue");
+var blueValue = document.getElementById("valueBlue");
+var sliderWhite = document.getElementById("sliderWhite");
+var whiteValue = document.getElementById("valueWhite");
+var sliderDuration = document.getElementById("sliderDuration");
+var durationValue = document.getElementById("valueDuration");
+var sliderFadeIn = document.getElementById("sliderFadeIn");
+var fadeinValue = document.getElementById("valueFadeIn");
+var sliderFadeOut = document.getElementById("sliderFadeOut");
+var fadeoutValue = document.getElementById("valueFadeOut");
+
+redValue.innerHTML = sliderRed.value;
+greenValue.innerHTML = sliderGreen.value;
+blueValue.innerHTML = sliderBlue.value;
+whiteValue.innerHTML = sliderWhite.value;
+durationValue.innerHTML = sliderDuration.value;
+fadeinValue.innerHTML = sliderFadeIn.value;
+fadeoutValue.innerHTML = sliderFadeOut.value;
+
+sliderRed.oninput = function() {
+  redValue.innerHTML = this.value;
+}
+sliderRed.onchange = function() {
+  LEDset();
+}
+sliderGreen.oninput = function() {
+  greenValue.innerHTML = this.value;
+}
+sliderGreen.onchange = function() {
+  LEDset();
+}
+sliderBlue.oninput = function() {
+  blueValue.innerHTML = this.value;
+}
+sliderBlue.onchange = function() {
+    LEDset();
+}
+sliderWhite.oninput = function() {
+  whiteValue.innerHTML = this.value;
+}
+sliderWhite.onchange = function() {
+    LEDset();
+}
+sliderDuration.oninput = function() {
+  durationValue.innerHTML = this.value;
+}
+sliderDuration.onchange = function() {
+    LEDset();
+}
+sliderFadeIn.oninput = function() {
+  fadeinValue.innerHTML = this.value;
+}
+sliderFadeIn.onchange = function() {
+    LEDset();
+}
+sliderFadeOut.oninput = function() {
+  fadeoutValue.innerHTML = this.value;
+}
+sliderFadeOut.onchange = function() {
+    LEDset();
+}
+</script>
+</body>
+</html>
