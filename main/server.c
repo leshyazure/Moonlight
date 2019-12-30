@@ -101,7 +101,7 @@ static esp_err_t rest_common_get_handler(httpd_req_t *req)
 }
 
 /* Simple handler for light brightness control */
-static esp_err_t light_brightness_post_handler(httpd_req_t *req)
+static esp_err_t setup_post_handler(httpd_req_t *req)
 {
     int total_len = req->content_len;
     int cur_len = 0;
@@ -223,13 +223,13 @@ esp_err_t start_rest_server(const char *base_path)
     httpd_register_uri_handler(server, &temperature_data_get_uri);
 
     /* URI handler for light brightness control */
-    httpd_uri_t light_brightness_post_uri = {
-        .uri = "/api/v1/light/brightness",
+    httpd_uri_t setup_post_uri = {
+        .uri = "/setup",
         .method = HTTP_POST,
-        .handler = light_brightness_post_handler,
+        .handler = setup_post_handler,
         .user_ctx = rest_context
     };
-    httpd_register_uri_handler(server, &light_brightness_post_uri);
+    httpd_register_uri_handler(server, &setup_post_uri);
 
     /* URI handler for getting web server files */
     httpd_uri_t common_get_uri = {

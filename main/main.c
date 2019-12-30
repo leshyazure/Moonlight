@@ -54,7 +54,10 @@ static void gpio_task_example(void* arg)
 
         	int fadein_in_s = fadein *1000;
         	int fadeout_in_s = fadeout * 1000;
+
+        	gpio_set_level(GPIO_NUM_2, 1);
         	ESP_LOGI(TAG, "Motion detected, fade in.");
+
         	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, LEDRed, fadein_in_s);
         	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_1, LEDGreen, fadein_in_s);
         	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_2, LEDBlue, fadein_in_s);
@@ -65,9 +68,11 @@ static void gpio_task_example(void* arg)
         	ledc_fade_start(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_2, LEDC_FADE_NO_WAIT);
         	ledc_fade_start(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_3, LEDC_FADE_NO_WAIT);
 
+
         	ESP_LOGI(TAG, "Wait %d seconds", duration);
             int duration_in_s = duration * 1000;
             vTaskDelay(duration_in_s / portTICK_RATE_MS);
+            gpio_set_level(GPIO_NUM_2, 0);
 
             ESP_LOGI(TAG, "Fade out.");
             ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, 0, fadeout_in_s);
@@ -234,11 +239,12 @@ void app_main()
 
 	PWMinit();
 
-
+	gpio_set_direction(GPIO_NUM_2, GPIO_MODE_OUTPUT);
+	gpio_set_level(GPIO_NUM_2, 0);
 	gpio_config_t io_conf;
     //interrupt of rising edge
     io_conf.intr_type = GPIO_PIN_INTR_POSEDGE;
-    //bit mask of the pins, use GPIO4/5 here
+    //bit mask of the pins, use GPIO5 here
     io_conf.pin_bit_mask = 1ULL<<5;
     //set as input mode
     io_conf.mode = GPIO_MODE_INPUT;

@@ -17,8 +17,8 @@ Project described on [www.azurescens.eu](http://www.azurescens.eu "Azurescens.eu
 
 ## Configuration
 
- * Folder **frontend** contains server files. Modify them, or use your own. Remember, that whole folder can't exceed 2MB if you're using internal memory. Otherwise you should use external SD card as server host.
+ * Folder **frontend** contains server files. Modify them, or use your own. Keep in mind that whole folder can't exceed 2MB if you're using internal memory. Otherwise you should use external SD card as server host.
  * Connection configuration can be done under *idf.py menuconfig* or directly under *sdkconfig* in project tree on Eclipse. Look for ***Moonlight Connection Configuration***.
- * If your device has enabled mDNS protocol, then you can simply cast your Moonlight device using a host name stored in **Moonlight Configuration**. By default it looks like *http://moonlight*
- * Otherwise to obtain an adress of Moonlight device you need to run an *idf.py monitor* or look for this in router settings.
+ * If your device has enabled mDNS protocol (e.g Win10 need to install external service like [Bonjour](https://support.apple.com/downloads/DL999/en_US/BonjourPSSetup.exe)), then you can simply cast your Moonlight device using a host name stored in **Moonlight Configuration** with additional **.local** domain name. By default it looks like **http://moonlight.local**
+ * Otherwise to obtain an adress of Moonlight device you need to run an *idf.py monitor* or look for *espressif* device in router settings.
  Adress usually starts with **192.168.0.** or **192.168.1.** and for easier further use can be assigned to static in your router.

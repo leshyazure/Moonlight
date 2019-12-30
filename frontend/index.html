@@ -68,7 +68,7 @@ var FadeOutValue = Number(document.getElementById("sliderFadeOut").value);
 
 
     $.ajax({
-        url: "/api/v1/light/brightness",
+        url: "/setup",
         type: "POST",
         data: JSON.stringify({ 
 			red: RedPWM, 
