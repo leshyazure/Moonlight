@@ -1,7 +1,7 @@
 /*
 	Moonlight v1.0
 */
-
+#include "driver/adc.h"
 #include "esp_event_loop.h"
 #include "driver/sdmmc_host.h"
 #include "driver/gpio.h"
@@ -54,9 +54,10 @@ static void gpio_task_example(void* arg)
 
         	int fadein_in_s = fadein *1000;
         	int fadeout_in_s = fadeout * 1000;
+            int phtres = adc1_get_raw(ADC1_CHANNEL_7);
 
         	gpio_set_level(GPIO_NUM_2, 1);
-        	ESP_LOGI(TAG, "Motion detected, fade in.");
+        	ESP_LOGI(TAG, "Motion detected, photoresistor: %d, fade in.", phtres);
 
         	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, LEDRed, fadein_in_s);
         	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_1, LEDGreen, fadein_in_s);
@@ -275,6 +276,8 @@ void app_main()
         //hook isr handler for specific gpio pin again
         gpio_isr_handler_add(5, gpio_isr_handler, (void*) 5);
 
+        adc1_config_width(ADC_WIDTH_BIT_12);
+        adc1_config_channel_atten(ADC1_CHANNEL_7,ADC_ATTEN_DB_11);
 
 
 
