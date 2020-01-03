@@ -9,9 +9,16 @@
 
 - Unexpected value changes (Check interrupts and unhandled expections)
 
+## [1.0.2] - 2020-01-02
+
+### Added
+
+- System LED as motion detection indicator
+
+
 ## [1.0.1] - 2019-12-31
 
-## Added
+### Added
 
 - Threshold control via photoresistor (ADC)
 - Schematic diagram

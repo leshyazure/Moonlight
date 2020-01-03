@@ -1,13 +1,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <moonlight.h>
 #include "esp_http_server.h"
 #include "esp_system.h"
 #include "esp_log.h"
 #include "esp_vfs.h"
 #include "cJSON.h"
 #include "driver/ledc.h"
-#include "main.h"
 
 static const char *REST_TAG = "server";
 #define REST_CHECK(a, str, goto_tag, ...)                                              \
@@ -100,8 +100,9 @@ static esp_err_t rest_common_get_handler(httpd_req_t *req)
     return ESP_OK;
 }
 
-/* Simple handler for light brightness control */
-static esp_err_t setup_post_handler(httpd_req_t *req)
+/* Handler for color control */
+
+static esp_err_t setup_color_handler(httpd_req_t *req)
 {
     int total_len = req->content_len;
     int cur_len = 0;
@@ -124,39 +125,24 @@ static esp_err_t setup_post_handler(httpd_req_t *req)
     buf[total_len] = '\0';
 
     cJSON *root = cJSON_Parse(buf);
-    LEDRed = cJSON_GetObjectItem(root, "red")->valueint;
-    LEDGreen = cJSON_GetObjectItem(root, "green")->valueint;
-    LEDBlue = cJSON_GetObjectItem(root, "blue")->valueint;
-    LEDWhite = cJSON_GetObjectItem(root, "white")->valueint;
-    duration = cJSON_GetObjectItem(root, "duration")->valueint;
-    fadein = cJSON_GetObjectItem(root, "fadein")->valueint;
-    fadeout = cJSON_GetObjectItem(root, "fadeout")->valueint;
+    int red = cJSON_GetObjectItem(root, "red")->valueint;
+    int green = cJSON_GetObjectItem(root, "green")->valueint;
+    int blue = cJSON_GetObjectItem(root, "blue")->valueint;
+    int white = cJSON_GetObjectItem(root, "white")->valueint;
 
-    ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, LEDRed);
-    ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0);
-    ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1, LEDGreen);
-    ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1);
-    ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2, LEDBlue);
-    ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2);
-    ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3, LEDWhite);
-    ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3);
+    int dur = cJSON_GetObjectItem(root, "duration")->valueint;
+    int fin = cJSON_GetObjectItem(root, "fadein")->valueint;
+    int fout = cJSON_GetObjectItem(root, "fadeout")->valueint;
 
+	cJSON_Delete(root);
+	httpd_resp_sendstr(req, "Post control value successfully");
 
-    ESP_LOGI(REST_TAG, "Set PWM: Red = %d, Green = %d, Blue = %d, White = %d", LEDRed, LEDGreen, LEDBlue, LEDWhite);
-    ESP_LOGI(REST_TAG, "Duration = %d, Fade in = %d, Fade out = %d", duration, fadein, fadeout);
-    cJSON_Delete(root);
-    httpd_resp_sendstr(req, "Post control value successfully");
+	ESP_LOGI(REST_TAG, "Set PWM: Red = %d, Green = %d, Blue = %d, White = %d", red, green, blue, white);
+	ESP_LOGI(REST_TAG, "Duration = %d, Fade in = %d, Fade out = %d", dur, fin, fout);
 
-    vTaskDelay(1200 / portTICK_RATE_MS);
+	configure_moonlight(red, green, blue, white, dur, fin, fout, 1000, 1);
+    preview_settings(red, green, blue, white, 1);
 
-    ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, 0);
-    ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0);
-    ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1, 0);
-    ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1);
-    ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2, 0);
-    ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2);
-    ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3, 0);
-    ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3);
     return ESP_OK;
 }
 
@@ -172,7 +158,7 @@ static esp_err_t system_info_get_handler(httpd_req_t *req)
     cJSON_AddNumberToObject(root, "cores", chip_info.cores);
     const char *sys_info = cJSON_Print(root);
     httpd_resp_sendstr(req, sys_info);
-  //  free((void *)sys_info);
+    free((void *)sys_info);
     cJSON_Delete(root);
     return ESP_OK;
 }
@@ -182,7 +168,7 @@ static esp_err_t temperature_data_get_handler(httpd_req_t *req)
 {
     httpd_resp_set_type(req, "application/json");
     cJSON *root = cJSON_CreateObject();
-    cJSON_AddNumberToObject(root, "raw", esp_random() % 20);
+    cJSON_AddNumberToObject(root, "measureLight", measureAmbientLight());
     const char *sys_info = cJSON_Print(root);
     httpd_resp_sendstr(req, sys_info);
     free((void *)sys_info);
@@ -215,7 +201,7 @@ esp_err_t start_rest_server(const char *base_path)
 
     /* URI handler for fetching temperature data */
     httpd_uri_t temperature_data_get_uri = {
-        .uri = "/api/v1/temp/raw",
+        .uri = "/sensor/ldr",
         .method = HTTP_GET,
         .handler = temperature_data_get_handler,
         .user_ctx = rest_context
@@ -224,9 +210,9 @@ esp_err_t start_rest_server(const char *base_path)
 
     /* URI handler for light brightness control */
     httpd_uri_t setup_post_uri = {
-        .uri = "/setup",
+        .uri = "/setup/color",
         .method = HTTP_POST,
-        .handler = setup_post_handler,
+        .handler = setup_color_handler,
         .user_ctx = rest_context
     };
     httpd_register_uri_handler(server, &setup_post_uri);

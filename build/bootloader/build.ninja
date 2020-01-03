@@ -866,14 +866,14 @@ build CMakeFiles/___idf_micro-ecc: CUSTOM_COMMAND
 # Custom command for CMakeFiles\menuconfig
 
 build CMakeFiles/menuconfig: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && python D:/ESP32/esp-idf-v4.0-beta2/tools/kconfig_new/confgen.py --kconfig D:/ESP32/esp-idf-v4.0-beta2/Kconfig --sdkconfig-rename D:/ESP32/esp-idf-v4.0-beta2/sdkconfig.rename --config D:/Projects/EclipseESP/Moonlight/sdkconfig --env-file D:/Projects/EclipseESP/Moonlight/build/bootloader/config.env --env IDF_TARGET=esp32 --output config D:/Projects/EclipseESP/Moonlight/sdkconfig && C:\Users\HP\.espressif\tools\cmake\3.13.4\bin\cmake.exe -E env "COMPONENT_KCONFIGS=D:/ESP32/esp-idf-v4.0-beta2/components/efuse/Kconfig D:/ESP32/esp-idf-v4.0-beta2/components/esp32/Kconfig D:/ESP32/esp-idf-v4.0-beta2/components/esp_common/Kconfig D:/ESP32/esp-idf-v4.0-beta2/components/log/Kconfig D:/ESP32/esp-idf-v4.0-beta2/components/spi_flash/Kconfig" "COMPONENT_KCONFIGS_PROJBUILD=D:/ESP32/esp-idf-v4.0-beta2/components/bootloader/Kconfig.projbuild D:/ESP32/esp-idf-v4.0-beta2/components/esptool_py/Kconfig.projbuild D:/ESP32/esp-idf-v4.0-beta2/components/partition_table/Kconfig.projbuild" IDF_CMAKE=y KCONFIG_CONFIG=D:/Projects/EclipseESP/Moonlight/sdkconfig IDF_TARGET=esp32 C:/Users/HP/.espressif/tools/mconf/v4.6.0.0-idf-20190628/mconf-idf.exe D:/ESP32/esp-idf-v4.0-beta2/Kconfig && python D:/ESP32/esp-idf-v4.0-beta2/tools/kconfig_new/confgen.py --kconfig D:/ESP32/esp-idf-v4.0-beta2/Kconfig --sdkconfig-rename D:/ESP32/esp-idf-v4.0-beta2/sdkconfig.rename --config D:/Projects/EclipseESP/Moonlight/sdkconfig --env-file D:/Projects/EclipseESP/Moonlight/build/bootloader/config.env --env IDF_TARGET=esp32 --output config D:/Projects/EclipseESP/Moonlight/sdkconfig"
+  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/tools/kconfig_new/confgen.py --kconfig D:/ESP32/esp-idf-v4.0-beta2/Kconfig --sdkconfig-rename D:/ESP32/esp-idf-v4.0-beta2/sdkconfig.rename --config D:/Projects/EclipseESP/Moonlight/sdkconfig --env-file D:/Projects/EclipseESP/Moonlight/build/bootloader/config.env --env IDF_TARGET=esp32 --output config D:/Projects/EclipseESP/Moonlight/sdkconfig && C:\Users\HP\.espressif\tools\cmake\3.13.4\bin\cmake.exe -E env "COMPONENT_KCONFIGS=D:/ESP32/esp-idf-v4.0-beta2/components/efuse/Kconfig D:/ESP32/esp-idf-v4.0-beta2/components/esp32/Kconfig D:/ESP32/esp-idf-v4.0-beta2/components/esp_common/Kconfig D:/ESP32/esp-idf-v4.0-beta2/components/log/Kconfig D:/ESP32/esp-idf-v4.0-beta2/components/spi_flash/Kconfig" "COMPONENT_KCONFIGS_PROJBUILD=D:/ESP32/esp-idf-v4.0-beta2/components/bootloader/Kconfig.projbuild D:/ESP32/esp-idf-v4.0-beta2/components/esptool_py/Kconfig.projbuild D:/ESP32/esp-idf-v4.0-beta2/components/partition_table/Kconfig.projbuild" IDF_CMAKE=y KCONFIG_CONFIG=D:/Projects/EclipseESP/Moonlight/sdkconfig IDF_TARGET=esp32 C:/Users/HP/.espressif/tools/mconf/v4.6.0.0-idf-20190628/mconf-idf.exe D:/ESP32/esp-idf-v4.0-beta2/Kconfig && C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/tools/kconfig_new/confgen.py --kconfig D:/ESP32/esp-idf-v4.0-beta2/Kconfig --sdkconfig-rename D:/ESP32/esp-idf-v4.0-beta2/sdkconfig.rename --config D:/Projects/EclipseESP/Moonlight/sdkconfig --env-file D:/Projects/EclipseESP/Moonlight/build/bootloader/config.env --env IDF_TARGET=esp32 --output config D:/Projects/EclipseESP/Moonlight/sdkconfig"
   pool = console
 
 #############################################
 # Custom command for CMakeFiles\confserver
 
 build CMakeFiles/confserver: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && python D:/ESP32/esp-idf-v4.0-beta2/tools/kconfig_new/confserver.py --env-file D:/Projects/EclipseESP/Moonlight/build/bootloader/config.env --kconfig D:/ESP32/esp-idf-v4.0-beta2/Kconfig --sdkconfig-rename D:/ESP32/esp-idf-v4.0-beta2/sdkconfig.rename --config D:/Projects/EclipseESP/Moonlight/sdkconfig"
+  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/tools/kconfig_new/confserver.py --env-file D:/Projects/EclipseESP/Moonlight/build/bootloader/config.env --kconfig D:/ESP32/esp-idf-v4.0-beta2/Kconfig --sdkconfig-rename D:/ESP32/esp-idf-v4.0-beta2/sdkconfig.rename --config D:/Projects/EclipseESP/Moonlight/sdkconfig"
   pool = console
 
 #############################################
@@ -885,7 +885,7 @@ build CMakeFiles/gen_project_binary: phony .bin_timestamp || __idf_build_target 
 # Custom command for .bin_timestamp
 
 build .bin_timestamp: CUSTOM_COMMAND bootloader.elf || __idf_build_target _project_elf_src bootloader.elf esp-idf/bootloader_support/libbootloader_support.a esp-idf/efuse/libefuse.a esp-idf/log/liblog.a esp-idf/main/libmain.a esp-idf/micro-ecc/libmicro-ecc.a esp-idf/soc/libsoc.a esp-idf/spi_flash/libspi_flash.a esp-idf/xtensa/libxtensa.a
-  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && python D:/ESP32/esp-idf-v4.0-beta2/components/esptool_py/esptool/esptool.py --chip esp32 elf2image --flash_mode dio --flash_freq 40m --flash_size 4MB -o D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.bin bootloader.elf && C:\Users\HP\.espressif\tools\cmake\3.13.4\bin\cmake.exe -E echo "Generated D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.bin" && C:\Users\HP\.espressif\tools\cmake\3.13.4\bin\cmake.exe -E md5sum D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.bin > D:/Projects/EclipseESP/Moonlight/build/bootloader/.bin_timestamp"
+  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/components/esptool_py/esptool/esptool.py --chip esp32 elf2image --flash_mode dio --flash_freq 40m --flash_size 4MB -o D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.bin bootloader.elf && C:\Users\HP\.espressif\tools\cmake\3.13.4\bin\cmake.exe -E echo "Generated D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.bin" && C:\Users\HP\.espressif\tools\cmake\3.13.4\bin\cmake.exe -E md5sum D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.bin > D:/Projects/EclipseESP/Moonlight/build/bootloader/.bin_timestamp"
   DESC = Generating binary image from built executable
   restat = 1
 
@@ -898,14 +898,14 @@ build CMakeFiles/app: phony || __idf_build_target _project_elf_src bootloader.el
 # Custom command for CMakeFiles\flash
 
 build CMakeFiles/flash: CUSTOM_COMMAND D$:/ESP32/esp-idf-v4.0-beta2/components/bootloader/subproject/partition_table D$:/ESP32/esp-idf-v4.0-beta2/components/bootloader/subproject/bootloader || __idf_build_target _project_elf_src app bootloader.elf esp-idf/bootloader_support/libbootloader_support.a esp-idf/efuse/libefuse.a esp-idf/log/liblog.a esp-idf/main/libmain.a esp-idf/micro-ecc/libmicro-ecc.a esp-idf/soc/libsoc.a esp-idf/spi_flash/libspi_flash.a esp-idf/xtensa/libxtensa.a gen_project_binary
-  COMMAND = cmd.exe /C "cd /D D:\ESP32\esp-idf-v4.0-beta2\components\esptool_py && C:\Users\HP\.espressif\tools\cmake\3.13.4\bin\cmake.exe -D IDF_PATH="D:/ESP32/esp-idf-v4.0-beta2" -D ESPTOOLPY="python D:/ESP32/esp-idf-v4.0-beta2/components/esptool_py/esptool/esptool.py --chip esp32" -D ESPTOOL_ARGS="write_flash @flash_project_args" -D ESPTOOL_WORKING_DIR="D:/Projects/EclipseESP/Moonlight/build/bootloader" -P run_esptool.cmake"
+  COMMAND = cmd.exe /C "cd /D D:\ESP32\esp-idf-v4.0-beta2\components\esptool_py && C:\Users\HP\.espressif\tools\cmake\3.13.4\bin\cmake.exe -D IDF_PATH="D:/ESP32/esp-idf-v4.0-beta2" -D ESPTOOLPY="C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/components/esptool_py/esptool/esptool.py --chip esp32" -D ESPTOOL_ARGS="write_flash @flash_project_args" -D ESPTOOL_WORKING_DIR="D:/Projects/EclipseESP/Moonlight/build/bootloader" -P run_esptool.cmake"
   pool = console
 
 #############################################
 # Custom command for CMakeFiles\app-flash
 
 build CMakeFiles/app-flash: CUSTOM_COMMAND || __idf_build_target _project_elf_src app bootloader.elf esp-idf/bootloader_support/libbootloader_support.a esp-idf/efuse/libefuse.a esp-idf/log/liblog.a esp-idf/main/libmain.a esp-idf/micro-ecc/libmicro-ecc.a esp-idf/soc/libsoc.a esp-idf/spi_flash/libspi_flash.a esp-idf/xtensa/libxtensa.a gen_project_binary
-  COMMAND = cmd.exe /C "cd /D D:\ESP32\esp-idf-v4.0-beta2\components\esptool_py && C:\Users\HP\.espressif\tools\cmake\3.13.4\bin\cmake.exe -D IDF_PATH="D:/ESP32/esp-idf-v4.0-beta2" -D ESPTOOLPY="python D:/ESP32/esp-idf-v4.0-beta2/components/esptool_py/esptool/esptool.py --chip esp32" -D ESPTOOL_ARGS="write_flash @flash_app_args" -D ESPTOOL_WORKING_DIR="D:/Projects/EclipseESP/Moonlight/build/bootloader" -P run_esptool.cmake"
+  COMMAND = cmd.exe /C "cd /D D:\ESP32\esp-idf-v4.0-beta2\components\esptool_py && C:\Users\HP\.espressif\tools\cmake\3.13.4\bin\cmake.exe -D IDF_PATH="D:/ESP32/esp-idf-v4.0-beta2" -D ESPTOOLPY="C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/components/esptool_py/esptool/esptool.py --chip esp32" -D ESPTOOL_ARGS="write_flash @flash_app_args" -D ESPTOOL_WORKING_DIR="D:/Projects/EclipseESP/Moonlight/build/bootloader" -P run_esptool.cmake"
   pool = console
 
 #############################################
@@ -925,19 +925,19 @@ build project_elf_src.c: CUSTOM_COMMAND
 # Custom command for CMakeFiles\size
 
 build CMakeFiles/size: CUSTOM_COMMAND bootloader.elf || __idf_build_target _project_elf_src bootloader.elf esp-idf/bootloader_support/libbootloader_support.a esp-idf/efuse/libefuse.a esp-idf/log/liblog.a esp-idf/main/libmain.a esp-idf/micro-ecc/libmicro-ecc.a esp-idf/soc/libsoc.a esp-idf/spi_flash/libspi_flash.a esp-idf/xtensa/libxtensa.a
-  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && python D:/ESP32/esp-idf-v4.0-beta2/tools/idf_size.py D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.map"
+  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/tools/idf_size.py D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.map"
 
 #############################################
 # Custom command for CMakeFiles\size-files
 
 build CMakeFiles/size-files: CUSTOM_COMMAND bootloader.elf || __idf_build_target _project_elf_src bootloader.elf esp-idf/bootloader_support/libbootloader_support.a esp-idf/efuse/libefuse.a esp-idf/log/liblog.a esp-idf/main/libmain.a esp-idf/micro-ecc/libmicro-ecc.a esp-idf/soc/libsoc.a esp-idf/spi_flash/libspi_flash.a esp-idf/xtensa/libxtensa.a
-  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && python D:/ESP32/esp-idf-v4.0-beta2/tools/idf_size.py --files D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.map"
+  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/tools/idf_size.py --files D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.map"
 
 #############################################
 # Custom command for CMakeFiles\size-components
 
 build CMakeFiles/size-components: CUSTOM_COMMAND bootloader.elf || __idf_build_target _project_elf_src bootloader.elf esp-idf/bootloader_support/libbootloader_support.a esp-idf/efuse/libefuse.a esp-idf/log/liblog.a esp-idf/main/libmain.a esp-idf/micro-ecc/libmicro-ecc.a esp-idf/soc/libsoc.a esp-idf/spi_flash/libspi_flash.a esp-idf/xtensa/libxtensa.a
-  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && python D:/ESP32/esp-idf-v4.0-beta2/tools/idf_size.py --archives D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.map"
+  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader && C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/tools/idf_size.py --archives D:/Projects/EclipseESP/Moonlight/build/bootloader/bootloader.map"
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
 # D:/ESP32/esp-idf-v4.0-beta2/components/bootloader/subproject/CMakeLists.txt
@@ -1605,19 +1605,19 @@ build esp-idf/efuse/edit_cache: phony esp-idf/efuse/CMakeFiles/edit_cache.util
 # Custom command for esp-idf\efuse\CMakeFiles\efuse_test_table
 
 build esp-idf/efuse/CMakeFiles/efuse_test_table: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader\esp-idf\efuse && python D:/ESP32/esp-idf-v4.0-beta2/components/efuse/efuse_table_gen.py D:/ESP32/esp-idf-v4.0-beta2/components/efuse/test/esp_efuse_test_table.csv --max_blk_len 192"
+  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader\esp-idf\efuse && C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/components/efuse/efuse_table_gen.py D:/ESP32/esp-idf-v4.0-beta2/components/efuse/test/esp_efuse_test_table.csv --max_blk_len 192"
 
 #############################################
 # Custom command for esp-idf\efuse\CMakeFiles\efuse_common_table
 
 build esp-idf/efuse/CMakeFiles/efuse_common_table: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader\esp-idf\efuse && python D:/ESP32/esp-idf-v4.0-beta2/components/efuse/efuse_table_gen.py D:/ESP32/esp-idf-v4.0-beta2/components/efuse/esp32/esp_efuse_table.csv --max_blk_len 192"
+  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader\esp-idf\efuse && C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/components/efuse/efuse_table_gen.py D:/ESP32/esp-idf-v4.0-beta2/components/efuse/esp32/esp_efuse_table.csv --max_blk_len 192"
 
 #############################################
 # Custom command for esp-idf\efuse\CMakeFiles\show_efuse_table
 
 build esp-idf/efuse/CMakeFiles/show_efuse_table: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader\esp-idf\efuse && python D:/ESP32/esp-idf-v4.0-beta2/components/efuse/efuse_table_gen.py D:/ESP32/esp-idf-v4.0-beta2/components/efuse/esp32/esp_efuse_table.csv --max_blk_len 192 --info"
+  COMMAND = cmd.exe /C "cd /D D:\Projects\EclipseESP\Moonlight\build\bootloader\esp-idf\efuse && C:\Users\HP\.espressif\python_env\idf4.0_py3.7_env\Scripts\python.exe D:/ESP32/esp-idf-v4.0-beta2/components/efuse/efuse_table_gen.py D:/ESP32/esp-idf-v4.0-beta2/components/efuse/esp32/esp_efuse_table.csv --max_blk_len 192 --info"
 # =============================================================================
 # Write statements declared in CMakeLists.txt:
 # D:/ESP32/esp-idf-v4.0-beta2/CMakeLists.txt

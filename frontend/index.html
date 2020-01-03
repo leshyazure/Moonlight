@@ -14,42 +14,74 @@
 </div>
 <div class="content">
 <br>
-<div class="subheader"><h2>LED Color</h2></div>
-<br>
 <div class="slidecontainer">
-  <input type="range" min="1" max="8000" value="50" class="slider" id="sliderRed"> 
-  <p class="redpreview">Red: <span id="valueRed"></span></p>
-    <input type="range" min="1" max="8000" value="50" class="slider" id="sliderGreen"> 
-  <p class="greenpreview">Green: <span id="valueGreen"></span></p>
-    <input type="range" min="1" max="8000" value="50" class="slider" id="sliderBlue"> 
-  <p class="bluepreview">Blue: <span id="valueBlue"></span></p>
-      <input type="range" min="1" max="8000" value="50" class="slider" id="sliderWhite"> 
-  <p class="whitepreview">White: <span id="valueWhite"></span></p>
+<div class="subheader"><h2>Target color:</h2></div>
+<br>
+
+  <input type="range" min="0" max="8000" value="0" class="slider" id="redTarget"> 
+  <p class="red-target">Red: <span id="redTargetView"></span></p>
+    <input type="range" min="0" max="8000" value="100" class="slider" id="greenTarget"> 
+  <p class="green-target">Green: <span id="greenTargetView"></span></p>
+    <input type="range" min="0" max="8000" value="500" class="slider" id="blueTarget"> 
+  <p class="blue-target">Blue: <span id="blueTargetView"></span></p>
+      <input type="range" min="0" max="8000" value="0" class="slider" id="whiteTarget"> 
+  <p class="white-target">White: <span id="whiteTargetView"></span></p>
 </div>
 <br>
-<div class="subheader"><h2>Duration</h2></div>
-<br>
 <div class="slidecontainer">
-  <input type="range" min="1" max="600" value="10" class="slider" id="sliderDuration"> 
-  <p class="durationpreview">Time in seconds: <span id="valueDuration"></span></p>
-    
+<div class="subheader"><h2>Standby color:</h2></div>
+<br>
+
+  <input type="range" min="0" max="100" value="0" class="slider" id="redStandby"> 
+  <p class="red-standby">Red: <span id="redStandbyView"></span></p>
+    <input type="range" min="0" max="100" value="0" class="slider" id="greenStandby"> 
+  <p class="green-standby">Green: <span id="greenStandbyView"></span></p>
+    <input type="range" min="0" max="100" value="0" class="slider" id="blueStandby"> 
+  <p class="blue-standby">Blue: <span id="blueStandbyView"></span></p>
+      <input type="range" min="0" max="100" value="0" class="slider" id="whiteStandby"> 
+  <p class="white-standby">White: <span id="whiteStandbyView"></span></p>
 </div>
 <br>
-<div class="subheader"><h2>Fade in duration</h2></div>
+<div class="threshold">
+<div class="subheader"><h2>Threshold:</h2></div>
 <br>
-<div class="slidecontainer">
-  <input type="range" min="1" max="15" value="2" class="slider" id="sliderFadeIn"> 
-  <p class="fadeinpreview">Time in seconds: <span id="valueFadeIn"></span></p>
-    
+
+<label for="duration">Current level: <span id="lightLevel"></span></label>
+<div class="tooltip">
+<input id="duration" type="number" min="1" max="600" value="5" class="inputNumber">
+<span class="tooltiptext">Threshold determines sensitive for ambient light. Use low values to enable controller only while ambient light is insignificant or when is just dark. The range of values depends on used photoresistor.</span></div><br>
+</div> <br><br>
+
+<div class="timings">
+<div class="subheader"><h2>Timing (in seconds):</h2></div>
+<br>
+
+<label for="duration">Duration:</label>
+<div class="tooltip">
+<input id="duration" type="number" min="1" max="600" value="5" class="inputNumber"><span class="tooltiptext">Light duration. Can't be shorter than any fade time.</span></div><br>
+<label for="fadeIn">Fade in:</label>
+<div class="tooltip">
+<input id="fadeIn" type="number" min="1" max="15" value="5" class="inputNumber">
+<span class="tooltiptext">Fade in duration. It doesn't increase total light duration.</span></div><br>
+<label for="fadeOut">Fade out:</label>
+<div class="tooltip">
+<input id="fadeOut" type="number" min="1" max="15" value="5" class="inputNumber">
+<span class="tooltiptext">Fade out duration. It doesn't increase total light duration.</span></div><br>   
 </div>
 <br>
-<div class="subheader"><h2>Fade out duration</h2></div>
 <br>
-<div class="slidecontainer">
-  <input type="range" min="1" max="15" value="2" class="slider" id="sliderFadeOut"> 
-  <p class="fadeoutpreview">Time in seconds: <span id="valueFadeOut"></span></p>
-    
-</div>
+<div class="preview">
+<div class="subheader"><h2>Preview:</h2></div>
+<br>
+
+<label for="previewEnable">Enable:</label><div class="tooltip"><input type="checkbox" id="previewEnable" value="1">
+<span class="tooltiptext">When enabled controller will shortly light up LEDs anytime you change color slider. Also visualizes fading times on change.</span></div><br>
+<label for="previewTime">Duration:</label>
+<div class="tooltip">
+<input id="previewTime" type="number" min="1" max="600" value="5" class="inputNumber">
+<span class="tooltiptext">Determines light on duration for color changes. Preview works any time you make changes in colors.</span></div><br>
+</div> <br>
+
 
 </div>
 
@@ -58,23 +90,32 @@
 LEDset = function() {
 
 
-var RedPWM = Number(document.getElementById("sliderRed").value);
-var GreenPWM = Number(document.getElementById("sliderGreen").value);
-var BluePWM = Number(document.getElementById("sliderBlue").value);
-var WhitePWM = Number(document.getElementById("sliderWhite").value);
-var DurationValue = Number(document.getElementById("sliderDuration").value);
-var FadeInValue = Number(document.getElementById("sliderFadeIn").value);
-var FadeOutValue = Number(document.getElementById("sliderFadeOut").value);
+
+var	redTarget = Number(document.getElementById("redTarget").value);
+var	greenTarget = Number(document.getElementById("greenTarget").value);
+var	blueTarget = Number(document.getElementById("blueTarget").value);
+var	whiteTarget = Number(document.getElementById("whiteTarget").value);
+var	redStandby = Number(document.getElementById("redStandby").value);
+var	greenStandby = Number(document.getElementById("greenStandby").value);
+var	blueStandby = Number(document.getElementById("blueStandby").value);
+var	whiteStandby = Number(document.getElementById("whiteStandby").value);
+var DurationValue = Number(document.getElementById("duration").value);
+var FadeInValue = Number(document.getElementById("fadeIn").value);
+var FadeOutValue = Number(document.getElementById("fadeOut").value);
 
 
     $.ajax({
-        url: "/setup",
+        url: "/setup/color",
         type: "POST",
         data: JSON.stringify({ 
-			red: RedPWM, 
-			green: GreenPWM, 
-			blue: BluePWM,
-			white: WhitePWM,
+			redOn: redTarget, 
+			redOff: redStandby,
+			greenOn: greenTarget,
+			greenOff: greenStandby,
+			blueOn: blueTarget,
+			blueOff: blueStandby,
+			whiteOn: whiteTarget,
+			whiteOff: whiteStandby,
 			duration: DurationValue,
 			fadein: FadeInValue,
 			fadeout: FadeOutValue}),
@@ -83,71 +124,99 @@ var FadeOutValue = Number(document.getElementById("sliderFadeOut").value);
     });
 };
 
+$.get("/sensor/ldr", function(data){
+    // var getLDR = JSON.parse(data);
+	//document.getElementById("lightLevel").innerHTML = getLDR.measureLight;
+    //alert("LDR: " + getLDR.measureLight);
+document.getElementById("lightLevel").innerHTML = data.measureLight;
+alert("LDR: " + data.measureLight);
+});
+
+var redTargetView = document.getElementById("redTargetView");
+var redStandbyView = document.getElementById("redStandbyView");
+var greenTargetView = document.getElementById("greenTargetView");
+var greenStandbyView = document.getElementById("greenStandbyView");
+var blueTargetView = document.getElementById("blueTargetView");
+var blueStandbyView = document.getElementById("blueStandbyView");
+var whiteTargetView = document.getElementById("whiteTargetView");
+var whiteStandbyView = document.getElementById("whiteStandbyView");
+var duration = document.getElementById("duration");
+var fadeIn = document.getElementById("fadeIn");
+var fadeOut = document.getElementById("fadeOut");
+
+var lightLevel = document.getElementById("lightLevel");
 
 
-var sliderRed = document.getElementById("sliderRed");
-var redValue = document.getElementById("valueRed");
-var sliderGreen = document.getElementById("sliderGreen");
-var greenValue = document.getElementById("valueGreen");
-var sliderBlue = document.getElementById("sliderBlue");
-var blueValue = document.getElementById("valueBlue");
-var sliderWhite = document.getElementById("sliderWhite");
-var whiteValue = document.getElementById("valueWhite");
-var sliderDuration = document.getElementById("sliderDuration");
-var durationValue = document.getElementById("valueDuration");
-var sliderFadeIn = document.getElementById("sliderFadeIn");
-var fadeinValue = document.getElementById("valueFadeIn");
-var sliderFadeOut = document.getElementById("sliderFadeOut");
-var fadeoutValue = document.getElementById("valueFadeOut");
+redTargetView.innerHTML = redTarget.value;
+greenTargetView.innerHTML = greenTarget.value;
+blueTargetView.innerHTML = blueTarget.value;
+whiteTargetView.innerHTML = whiteTarget.value;
+redStandbyView.innerHTML = redStandby.value;
+greenStandbyView.innerHTML = greenStandby.value;
+blueStandbyView.innerHTML = blueStandby.value;
+whiteStandbyView.innerHTML = whiteStandby.value;
 
-redValue.innerHTML = sliderRed.value;
-greenValue.innerHTML = sliderGreen.value;
-blueValue.innerHTML = sliderBlue.value;
-whiteValue.innerHTML = sliderWhite.value;
-durationValue.innerHTML = sliderDuration.value;
-fadeinValue.innerHTML = sliderFadeIn.value;
-fadeoutValue.innerHTML = sliderFadeOut.value;
 
-sliderRed.oninput = function() {
-  redValue.innerHTML = this.value;
+
+
+redTarget.oninput = function() {
+  redTargetView.innerHTML = this.value;
 }
-sliderRed.onchange = function() {
+redTarget.onchange = function() {
   LEDset();
 }
-sliderGreen.oninput = function() {
-  greenValue.innerHTML = this.value;
+redStandby.oninput = function() {
+  redStandbyView.innerHTML = this.value;
 }
-sliderGreen.onchange = function() {
+redStandby.onchange = function() {
   LEDset();
 }
-sliderBlue.oninput = function() {
-  blueValue.innerHTML = this.value;
+greenTarget.oninput = function() {
+  greenTargetView.innerHTML = this.value;
 }
-sliderBlue.onchange = function() {
+greenTarget.onchange = function() {
+  LEDset();
+}
+greenStandby.oninput = function() {
+  greenStandbyView.innerHTML = this.value;
+}
+greenStandby.onchange = function() {
+  LEDset();
+}
+blueTarget.oninput = function() {
+  blueTargetView.innerHTML = this.value;
+}
+blueTarget.onchange = function() {
     LEDset();
 }
-sliderWhite.oninput = function() {
-  whiteValue.innerHTML = this.value;
+blueStandby.oninput = function() {
+  blueStandbyView.innerHTML = this.value;
 }
-sliderWhite.onchange = function() {
+blueStandby.onchange = function() {
     LEDset();
 }
-sliderDuration.oninput = function() {
-  durationValue.innerHTML = this.value;
+whiteTarget.oninput = function() {
+  whiteTargetView.innerHTML = this.value;
 }
-sliderDuration.onchange = function() {
+whiteTarget.onchange = function() {
     LEDset();
 }
-sliderFadeIn.oninput = function() {
-  fadeinValue.innerHTML = this.value;
+whiteStandby.oninput = function() {
+  whiteStandbyView.innerHTML = this.value;
 }
-sliderFadeIn.onchange = function() {
+whiteStandby.onchange = function() {
     LEDset();
 }
-sliderFadeOut.oninput = function() {
-  fadeoutValue.innerHTML = this.value;
+
+duration.onchange = function() {
+    LEDset();
 }
-sliderFadeOut.onchange = function() {
+
+fadeIn.onchange = function() {
+    LEDset();
+}
+
+fadeOut.onchange = function() {
     LEDset();
 }
 </script>

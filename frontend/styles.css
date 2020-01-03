@@ -33,38 +33,95 @@ a:active {
 } 
 
  
-
-
 .content {
   padding: 16px;
-
 }
 .subheader h3 {
 	display: inline;
 	padding: 16px;
 }
 
-
+.threshold {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
 .slidecontainer {
   width: 100%;
+
 }
 .slidecontainer,
 p {
     font: 1rem 'Calibri';
 }
-.redpreview {
+.red-target, .red-standby {
   color: #FE3025;
 }
-.greenpreview {
+.green-target, .green-standby {
   color: #05DF00;
 }
-.bluepreview {
+.blue-target, .blue-standby {
   color: #0099FF;
 }
-.whitepreview {
+.white-target, .white-standby {
   color: #EEEEEE;
 }
+.threshold {
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.timings {
+  padding-top: 16px;
+  padding-bottom: 0px;
+}
+.preview {
+  padding-top: 0px;
+  padding-bottom: 16px;
+}
+label {
 
+  float: left;
+  clear: left;
+  width: 80px;
+  text-align: left;
+  padding: 16px 20px;
+}
+
+input[type=number] {
+
+  text-align:center;
+  float: left;
+  background-color: #111111;
+  color: white;
+  width: 55px;
+  padding: 12px 15px;
+  margin: 18px 30px;
+  box-sizing: border-box;
+  border: 3px solid #004E9B;
+  border-radius: 15px;
+  -moz-appearance:textfield;
+  
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number]:focus {
+  background-color: #4E4E4E;
+}
+input[type=checkbox] {
+
+  text-align:center;
+  float: left;
+  background-color: #111111;
+  color: white;
+  padding: 12px 15px;
+  margin: 8px 30px;
+
+  
+}
 .slider {
   -webkit-appearance: none;
   width: 300px;
@@ -73,8 +130,8 @@ p {
   outline: none;
   opacity: 0.6;
   border-radius: 5px;
-  -webkit-transition: .2s;
-  transition: opacity .2s;
+  -webkit-transition: .3s;
+  transition: opacity .3s;
 }
 
 .slider:hover {
@@ -98,30 +155,96 @@ p {
   background: #878989;
   cursor: pointer;
 }
-#sliderRed.slider::-webkit-slider-thumb {
+#redTarget.slider::-webkit-slider-thumb {
   background: #FE3025;
 }
-#sliderRed.slider::-moz-range-thumb {
+#redTarget.slider::-moz-range-thumb {
   background: #FE3025;
 }
-#sliderGreen.slider::-webkit-slider-thumb {
+#redStandby.slider::-webkit-slider-thumb {
+  background: #FE3025;
+}
+#redStandby.slider::-moz-range-thumb {
+  background: #FE3025;
+}
+#greenTarget.slider::-webkit-slider-thumb {
   background: #05DF00;
 }
-#sliderGreen.slider::-moz-range-thumb {
+#greenTarget.slider::-moz-range-thumb {
   background: #05DF00;
 }
-#sliderBlue.slider::-webkit-slider-thumb {
+#greenStandby.slider::-webkit-slider-thumb {
+  background: #05DF00;
+}
+#greenStandby.slider::-moz-range-thumb {
+  background: #05DF00;
+}
+#blueTarget.slider::-webkit-slider-thumb {
   background: #0099FF;
 }
-#sliderBlue.slider::-moz-range-thumb {
+#blueTarget.slider::-moz-range-thumb {
   background: #0099FF;
 }
-#sliderWhite.slider::-webkit-slider-thumb {
+#blueStandby.slider::-webkit-slider-thumb {
+  background: #0099FF;
+}
+#blueStandby.slider::-moz-range-thumb {
+  background: #0099FF;
+}
+#whiteTarget.slider::-webkit-slider-thumb {
   background: #FFFFFF;
 }
-#sliderWhite.slider::-moz-range-thumb {
+#whiteTarget.slider::-moz-range-thumb {
   background: #FFFFFF;
 }
+#whiteStandby.slider::-webkit-slider-thumb {
+  background: #FFFFFF;
+}
+#whiteStandby.slider::-moz-range-thumb {
+  background: #FFFFFF;
+}
+
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
+  padding: 10px 10px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -110px;
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
 
 /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
 @media screen and (max-width: 600px) {
