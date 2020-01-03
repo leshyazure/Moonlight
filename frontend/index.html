@@ -46,12 +46,13 @@
 <div class="subheader"><h2>Threshold:</h2></div>
 <br>
 
-<label for="duration">Current level: <span id="lightLevel"></span></label>
+<label for="measuredLevel">Measured level: </label><div class="tooltip"><p class="measuredLevel"><span id="lightLevel">XXX</span></p><span class="tooltiptext">Show current light level measured by photoresistor. Refresh page to make new measurement.</span></div><br>
+<label for="threshold">Threshold level:</label>
 <div class="tooltip">
-<input id="duration" type="number" min="1" max="600" value="5" class="inputNumber">
-<span class="tooltiptext">Threshold determines sensitive for ambient light. Use low values to enable controller only while ambient light is insignificant or when is just dark. The range of values depends on used photoresistor.</span></div><br>
-</div> <br><br>
-
+<input id="threshold" type="number" min="1" max="600" value="5" class="inputNumber">
+<span class="tooltiptext">Threshold determines sensitive for ambient light. Use low values to enable controller only while ambient light is insignificant or when is just dark. The range of values depends on used photoresistor.</span></div>
+</div> 
+<br>
 <div class="timings">
 <div class="subheader"><h2>Timing (in seconds):</h2></div>
 <br>
@@ -82,14 +83,15 @@
 <span class="tooltiptext">Determines light on duration for color changes. Preview works any time you make changes in colors.</span></div><br>
 </div> <br>
 
-
 </div>
 
 <script>
 
+$.get("/sensor/ldr", function(data){
+document.getElementById("lightLevel").innerHTML = data.measureLight;
+});
+
 LEDset = function() {
-
-
 
 var	redTarget = Number(document.getElementById("redTarget").value);
 var	greenTarget = Number(document.getElementById("greenTarget").value);
@@ -124,13 +126,6 @@ var FadeOutValue = Number(document.getElementById("fadeOut").value);
     });
 };
 
-$.get("/sensor/ldr", function(data){
-    // var getLDR = JSON.parse(data);
-	//document.getElementById("lightLevel").innerHTML = getLDR.measureLight;
-    //alert("LDR: " + getLDR.measureLight);
-document.getElementById("lightLevel").innerHTML = data.measureLight;
-alert("LDR: " + data.measureLight);
-});
 
 var redTargetView = document.getElementById("redTargetView");
 var redStandbyView = document.getElementById("redStandbyView");
