@@ -114,13 +114,14 @@ input::-webkit-inner-spin-button {
 }
 
 input[type=number]:focus {
-  background-color: #4E4E4E;
+  background-color: #003061;
+  border-color: #0062D4;
 }
 input[type=checkbox] {
 
   text-align:center;
   float: left;
-  background-color: #111111;
+  background-color: #000000;
   color: white;
   padding: 12px 15px;
   margin: 19px 50px;
