@@ -18,13 +18,13 @@
 <div class="subheader"><h2>Target color:</h2></div>
 <br>
 <div class="tooltip">
-  <input type="range" min="0" max="8000" value="0" class="slider" id="redTarget"> 
+  <input type="range" min="0" max="8191" value="0" class="slider" id="redTarget"> 
   <p class="red-target">Red: <span id="redTargetView"></span></p>
-    <input type="range" min="0" max="8000" value="100" class="slider" id="greenTarget"> 
+    <input type="range" min="0" max="8191" value="100" class="slider" id="greenTarget"> 
   <p class="green-target">Green: <span id="greenTargetView"></span></p>
-    <input type="range" min="0" max="8000" value="500" class="slider" id="blueTarget"> 
+    <input type="range" min="0" max="8191" value="500" class="slider" id="blueTarget"> 
   <p class="blue-target">Blue: <span id="blueTargetView"></span></p>
-      <input type="range" min="0" max="8000" value="0" class="slider" id="whiteTarget"> 
+      <input type="range" min="0" max="8191" value="0" class="slider" id="whiteTarget"> 
   <p class="white-target">White: <span id="whiteTargetView"></span></p>
   <span class="tooltiptext">Target color ratio values. This color is set, when controller detect a motion.</span></div>
 </div>
@@ -48,7 +48,7 @@
 <div class="subheader"><h2>Threshold:</h2></div>
 <br>
 
-<label for="measuredLevel">Measured level: </label><div class="tooltip"><p class="measuredLevel"><span id="lightLevel">XXX</span></p><span class="tooltiptext">Show current light level measured by photoresistor. Refresh page to make new measurement.</span></div><br>
+<label for="measuredLevel">Measured level: </label><div class="tooltip"><p class="measuredLevel"><span id="lightLevel">ERR</span></p><span class="tooltiptext">Show current light level measured by photoresistor. Refresh page to make new measurement.</span></div><br>
 <label for="threshold">Threshold level:</label>
 <div class="tooltip">
 <input id="threshold" type="number" min="1" max="600" value="5" class="inputNumber">

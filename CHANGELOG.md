@@ -4,16 +4,27 @@
 
 - Add threshold control on frontend
 - Rewrite tasks
+- Add gamma correction for linear brightness change.
 
 ## FixMe
 
 - Unexpected value changes (Check interrupts and unhandled expections)
 
+## [1.0.3] - 2020-01-04
+
+## Added
+
+- Preview control on front end side
+
+## Channged
+
+- Rewrited control functions
+
 ## [1.0.2] - 2020-01-02
 
 ### Added
 
-- System LED as motion detection indicator
+- Build-in ESP32 system LED as motion detection indicator
 
 
 ## [1.0.1] - 2019-12-31

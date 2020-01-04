@@ -35,25 +35,6 @@ bool enablePreview = ENABLE_PREVIEW;
 int previewTime = PREVIEW_TIME;
 
 
-int getRon()
-{
-	return redOn;
-}
-
-int getGon()
-{
-	return greenOn;
-}
-
-int getBon()
-{
-	return blueOn;
-}
-
-int getWon()
-{
-	return whiteOn;
-}
 int getFadeIn()
 {
 	return fadeIn;
@@ -73,6 +54,13 @@ void setLEDOn(int r, int g, int b, int w)
 	greenOn = g;
 	blueOn = b;
 	whiteOn = w;
+}
+void setLEDOff(int r, int g, int b, int w)
+{
+	redOff = r;
+	greenOff = g;
+	blueOff = b;
+	whiteOff = w;
 }
 
 int measureAmbientLight()

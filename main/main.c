@@ -1,5 +1,5 @@
 /*
-	Moonlight v1.0
+	Moonlight v1.0.2
  */
 #include <moonlight.h>
 #include <config.h>
@@ -147,7 +147,7 @@ static void motion_detection_task(void* arg)
 
 			vTaskDelay(1000 / portTICK_RATE_MS);
 			gpio_set_level(GPIO_NUM_2, 0);
-
+			vTaskDelay((getFadeIn() * 1000) / portTICK_RATE_MS);
 			ESP_LOGI(TAG, "Wait %d seconds", getDuration());
 			vTaskDelay((duration_in_s - 1000)/ portTICK_RATE_MS);
 
@@ -239,15 +239,13 @@ void app_main()
 	gpio_config_t io_conf;
 	//interrupt of rising edge
 	io_conf.intr_type = GPIO_PIN_INTR_POSEDGE;
-	//bit mask of the pins, use GPIO5 here
-	io_conf.pin_bit_mask = 1ULL<<5;
+	//bit mask of the PIR pin
+	io_conf.pin_bit_mask = 1ULL<<PIR_PIN;
 	//set as input mode
 	io_conf.mode = GPIO_MODE_INPUT;
 	//enable pull-up mode
 	io_conf.pull_up_en = 1;
 	gpio_config(&io_conf);
-
-
 	// Initialize fade service.
 	ledc_fade_func_install(0);
 
@@ -259,13 +257,13 @@ void app_main()
 	//install gpio isr service
 	gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
 	//hook isr handler for specific gpio pin
-	gpio_isr_handler_add(5, gpio_isr_handler, (void*) 5);
+	gpio_isr_handler_add(PIR_PIN, gpio_isr_handler, (void*) PIR_PIN);
 
 
 	//remove isr handler for gpio number.
-	gpio_isr_handler_remove(5);
+	gpio_isr_handler_remove(PIR_PIN);
 	//hook isr handler for specific gpio pin again
-	gpio_isr_handler_add(5, gpio_isr_handler, (void*) 5);
+	gpio_isr_handler_add(PIR_PIN, gpio_isr_handler, (void*) PIR_PIN);
 
 	adc1_config_width(ADC_WIDTH_BIT_12);
 	// 11 dB attenuation between 150 to 2450 mV

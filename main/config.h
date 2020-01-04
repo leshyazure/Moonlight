@@ -20,6 +20,8 @@
 #define LED_GREEN 22
 #define LED_BLUE 21
 #define LED_WHITE 19
+// PIR pin configuration
+#define PIR_PIN 5
 
 // Default light on values
 #define RED_ON 	0

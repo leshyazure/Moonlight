@@ -15,7 +15,7 @@ int getR();
 int getG();
 int getB();
 int getW();
-int getFadein();
+int getFadeIn();
 int getFadeout();
 int getDuration();
 int measureAmbientLight();
