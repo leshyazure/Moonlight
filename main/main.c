@@ -2,6 +2,7 @@
 	Moonlight v1.0
  */
 #include <moonlight.h>
+#include <config.h>
 #include "driver/adc.h"
 #include "esp_event_loop.h"
 #include "driver/sdmmc_host.h"
@@ -136,13 +137,13 @@ static void motion_detection_task(void* arg)
 		if(xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
 
 			int duration_in_s = getDuration() * 1000;
-			int phtres = adc1_get_raw(ADC1_CHANNEL_7);
+			int phtres = adc1_get_raw(PHOTORESISTOR);
 
 			gpio_set_level(GPIO_NUM_2, 1);
 			ESP_LOGI(TAG, "Motion detected, photoresistor: %d.", phtres);
 
 
-			fade_in(getR(), getG(), getB(), getW(), getFadein(), getFadein(), getFadein(), getFadein());
+			fade_in();
 
 			vTaskDelay(1000 / portTICK_RATE_MS);
 			gpio_set_level(GPIO_NUM_2, 0);
@@ -150,7 +151,7 @@ static void motion_detection_task(void* arg)
 			ESP_LOGI(TAG, "Wait %d seconds", getDuration());
 			vTaskDelay((duration_in_s - 1000)/ portTICK_RATE_MS);
 
-			fade_out(0, 0, 0, 0, getFadeout(), getFadeout(), getFadeout(), getFadeout());
+			fade_out();
 
 			//			uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
 			//			ESP_LOGI(TAG, "High water mark %d", uxHighWaterMark);
@@ -177,7 +178,7 @@ void PWMinit() {
 
 					.channel    = LEDC_CHANNEL_0,
 					.duty       = 0,
-					.gpio_num   = 23,
+					.gpio_num   = LED_RED,
 					.speed_mode = LEDC_HIGH_SPEED_MODE,
 					.hpoint     = 0,
 					.timer_sel  = LEDC_TIMER_0
@@ -186,7 +187,7 @@ void PWMinit() {
 
 					.channel    = LEDC_CHANNEL_1,
 					.duty       = 0,
-					.gpio_num   = 22,
+					.gpio_num   = LED_GREEN,
 					.speed_mode = LEDC_HIGH_SPEED_MODE,
 					.hpoint     = 0,
 					.timer_sel  = LEDC_TIMER_0
@@ -195,7 +196,7 @@ void PWMinit() {
 
 					.channel    = LEDC_CHANNEL_2,
 					.duty       = 0,
-					.gpio_num   = 21,
+					.gpio_num   = LED_BLUE,
 					.speed_mode = LEDC_HIGH_SPEED_MODE,
 					.hpoint     = 0,
 					.timer_sel  = LEDC_TIMER_0
@@ -204,14 +205,13 @@ void PWMinit() {
 
 					.channel    = LEDC_CHANNEL_3,
 					.duty       = 0,
-					.gpio_num   = 19,
+					.gpio_num   = LED_WHITE,
 					.speed_mode = LEDC_HIGH_SPEED_MODE,
 					.hpoint     = 0,
 					.timer_sel  = LEDC_TIMER_0
 			}};
 
 	// Set LED Controller with previously prepared configuration
-
 	for(int i = 0; i < 4; i++) {
 		ledc_channel_config(&ledc_channel[i]);
 	}
@@ -251,13 +251,10 @@ void app_main()
 	// Initialize fade service.
 	ledc_fade_func_install(0);
 
-	//change gpio intrrupt type for one pin
-	//  gpio_set_intr_type(5, GPIO_INTR_ANYEDGE);
-
 	//create a queue to handle gpio event from isr
 	gpio_evt_queue = xQueueCreate(10, sizeof(uint32_t));
 	//start gpio task
-	xTaskCreate(motion_detection_task, "motion detection task", 2048, NULL, 10, NULL);
+	xTaskCreate(motion_detection_task, "motion detect", 2048, NULL, 10, NULL);
 
 	//install gpio isr service
 	gpio_install_isr_service(ESP_INTR_FLAG_DEFAULT);
@@ -272,6 +269,6 @@ void app_main()
 
 	adc1_config_width(ADC_WIDTH_BIT_12);
 	// 11 dB attenuation between 150 to 2450 mV
-	adc1_config_channel_atten(ADC1_CHANNEL_7,ADC_ATTEN_DB_11);
+	adc1_config_channel_atten(PHOTORESISTOR,ADC_ATTEN_DB_11);
 
 }

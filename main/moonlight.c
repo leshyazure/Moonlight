@@ -14,17 +14,6 @@
 #include "driver/adc.h"
 
 static const char *TAG = "moonlight";
-//old
-int LEDRed = 0;
-int LEDGreen = 1000;
-int LEDBlue = 1000;
-int LEDWhite = 0;
-int duration = 5;
-int fadein = 4;
-int fadeout = 4;
-int threshold = 1000;
-int preview_time = 1;
-//new
 
 int redOn = RED_ON;
 int greenOn = GREEN_ON;
@@ -36,32 +25,42 @@ int greenOff = GREEN_OFF;
 int blueOff = BLUE_OFF;
 int whiteOff = WHITE_OFF;
 
-int getR()
+int duration = DURATION;
+int fadeIn = COMMON_FADE_IN;
+int fadeOut = COMMON_FADE_OUT;
+
+int threshold = THRESHOLD;
+
+bool enablePreview = ENABLE_PREVIEW;
+int previewTime = PREVIEW_TIME;
+
+
+int getRon()
 {
-	return LEDRed;
+	return redOn;
 }
 
-int getG()
+int getGon()
 {
-	return LEDGreen;
+	return greenOn;
 }
 
-int getB()
+int getBon()
 {
-	return LEDBlue;
+	return blueOn;
 }
 
-int getW()
+int getWon()
 {
-	return LEDWhite;
+	return whiteOn;
 }
-int getFadein()
+int getFadeIn()
 {
-	return fadein;
+	return fadeIn;
 }
-int getFadeout()
+int getFadeOut()
 {
-	return fadeout;
+	return fadeOut;
 }
 int getDuration()
 {
@@ -70,27 +69,33 @@ int getDuration()
 
 void setLEDOn(int r, int g, int b, int w)
 {
-
+	redOn = r;
+	greenOn = g;
+	blueOn = b;
+	whiteOn = w;
 }
+
 int measureAmbientLight()
 {
-	return adc1_get_raw(ADC1_CHANNEL_7);
+	return adc1_get_raw(PHOTORESISTOR);
 }
 
 
-void fade_in(int red, int green, int blue, int white, int red_fade, int green_fade, int blue_fade, int white_fade)
+void fade_in()
 {
-
+	/*
 	int red_ms = red_fade * 1000;
 	int green_ms = green_fade * 1000;
 	int blue_ms = blue_fade * 1000;
 	int white_ms = white_fade * 1000;
+*/
 
-	ESP_LOGI(TAG, "Fade in to R:%d G:%d B:%d W:%d, with times %d,%d,%d,%d ", red, green, blue, white, red_fade, green_fade, blue_fade, white_fade);
-	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, red, red_ms);
-	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_1, green, green_ms);
-	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_2, blue, blue_ms);
-	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_3, white, white_ms);
+
+	ESP_LOGI(TAG, "Fade in to R:%d G:%d B:%d W:%d, with time %d", redOn, greenOn, blueOn, whiteOn, fadeIn);
+	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, redOn, (fadeIn * 1000));
+	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_1, greenOn, (fadeIn * 1000));
+	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_2, blueOn, (fadeIn * 1000));
+	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_3, whiteOn, (fadeIn * 1000));
 
 	ledc_fade_start(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, LEDC_FADE_NO_WAIT);
 	ledc_fade_start(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_1, LEDC_FADE_NO_WAIT);
@@ -99,19 +104,19 @@ void fade_in(int red, int green, int blue, int white, int red_fade, int green_fa
 
 }
 
-void fade_out(int red, int green, int blue, int white, int red_fade, int green_fade, int blue_fade, int white_fade)
+void fade_out()
 {
-
+	/*
 	int red_ms = red_fade * 1000;
 	int green_ms = green_fade * 1000;
 	int blue_ms = blue_fade * 1000;
 	int white_ms = white_fade * 1000;
-
-	ESP_LOGI(TAG, "Fade out to R:%d G:%d B:%d W:%d, with times %d,%d,%d,%d ", red, green, blue, white, red_fade, green_fade, blue_fade, white_fade);
-	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, red, red_ms);
-	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_1, green, green_ms);
-	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_2, blue, blue_ms);
-	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_3, white, white_ms);
+*/
+	ESP_LOGI(TAG, "Fade out to R:%d G:%d B:%d W:%d, with time %d ", redOff, greenOn, blueOn, whiteOn, fadeOut);
+	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, redOff, (fadeOut * 1000));
+	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_1, greenOff, (fadeOut * 1000));
+	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_2, blueOff, (fadeOut * 1000));
+	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_3, whiteOff, (fadeOut * 1000));
 
 	ledc_fade_start(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, LEDC_FADE_NO_WAIT);
 	ledc_fade_start(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_1, LEDC_FADE_NO_WAIT);
@@ -120,30 +125,31 @@ void fade_out(int red, int green, int blue, int white, int red_fade, int green_f
 
 }
 
-void preview_settings(int red, int green, int blue, int white, int time)
+void previewColor()
 {
+	if(enablePreview) {
+		ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, redOn);
+		ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0);
+		ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1, greenOn);
+		ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1);
+		ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2, blueOn);
+		ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2);
+		ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3, whiteOn);
+		ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3);
 
-	ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, red);
-	ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0);
-	ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1, green);
-	ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1);
-	ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2, blue);
-	ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2);
-	ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3, white);
-	ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3);
+		vTaskDelay((previewTime * 1000) / portTICK_RATE_MS);
 
-	vTaskDelay((time * 1000) / portTICK_RATE_MS);
-
-	ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, 0);
-	ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0);
-	ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1, 0);
-	ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1);
-	ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2, 0);
-	ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2);
-	ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3, 0);
-	ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3);
+		ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, redOff);
+		ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0);
+		ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1, greenOff);
+		ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_1);
+		ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2, blueOff);
+		ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_2);
+		ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3, whiteOff);
+		ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3);
+	}
 }
-
+/*
 void configure_moonlight(
 		int red,
 		int green,
@@ -165,6 +171,6 @@ void configure_moonlight(
 	threshold = thresh;
 	preview_time = prevtime;
 }
-
+*/
 
 

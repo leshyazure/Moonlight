@@ -8,6 +8,8 @@
 #ifndef MOONLIGHT_H_
 #define MOONLIGHT_H_
 
+void previewColor();
+void setLEDOn(int r, int g, int b, int w);
 
 int getR();
 int getG();
@@ -18,8 +20,9 @@ int getFadeout();
 int getDuration();
 int measureAmbientLight();
 
-void fade_in(int red, int green, int blue, int white, int red_fade, int green_fade, int blue_fade, int white_fade);
-void fade_out(int red, int green, int blue, int white, int red_fade, int green_fade, int blue_fade, int white_fade);
+void fade_in();
+void fade_out();
+
 void configure_moonlight(
 		int red,
 		int green,
@@ -30,7 +33,7 @@ void configure_moonlight(
 		int fout,
 		int thresh,
 		int prevtime);
-void preview_settings(int red, int green, int blue, int white, int time);
+
 
 #endif /* MOONLIGHT_H_ */
 

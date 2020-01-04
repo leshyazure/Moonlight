@@ -125,23 +125,24 @@ static esp_err_t setup_color_handler(httpd_req_t *req)
     buf[total_len] = '\0';
 
     cJSON *root = cJSON_Parse(buf);
-    int red = cJSON_GetObjectItem(root, "red")->valueint;
-    int green = cJSON_GetObjectItem(root, "green")->valueint;
-    int blue = cJSON_GetObjectItem(root, "blue")->valueint;
-    int white = cJSON_GetObjectItem(root, "white")->valueint;
+    int red = cJSON_GetObjectItem(root, "redOn")->valueint;
+    int green = cJSON_GetObjectItem(root, "greenOn")->valueint;
+    int blue = cJSON_GetObjectItem(root, "blueOn")->valueint;
+    int white = cJSON_GetObjectItem(root, "whiteOn")->valueint;
 
-    int dur = cJSON_GetObjectItem(root, "duration")->valueint;
-    int fin = cJSON_GetObjectItem(root, "fadein")->valueint;
-    int fout = cJSON_GetObjectItem(root, "fadeout")->valueint;
+  //  int dur = cJSON_GetObjectItem(root, "duration")->valueint;
+ //   int fin = cJSON_GetObjectItem(root, "fadein")->valueint;
+  //  int fout = cJSON_GetObjectItem(root, "fadeout")->valueint;
 
 	cJSON_Delete(root);
 	httpd_resp_sendstr(req, "Post control value successfully");
 
 	ESP_LOGI(REST_TAG, "Set PWM: Red = %d, Green = %d, Blue = %d, White = %d", red, green, blue, white);
-	ESP_LOGI(REST_TAG, "Duration = %d, Fade in = %d, Fade out = %d", dur, fin, fout);
+//	ESP_LOGI(REST_TAG, "Duration = %d, Fade in = %d, Fade out = %d", dur, fin, fout);
 
-	configure_moonlight(red, green, blue, white, dur, fin, fout, 1000, 1);
-    preview_settings(red, green, blue, white, 1);
+	//configure_moonlight(red, green, blue, white, dur, fin, fout, 1000, 1);
+	setLEDOn(red, green, blue, white);
+    previewColor();
 
     return ESP_OK;
 }
