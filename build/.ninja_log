@@ -969,3 +969,16 @@
 29	76	5996181395977207	bootloader/bootloader.bin	7a2dca29ece97d11
 29	76	5996181395977207	bootloader/bootloader.map	7a2dca29ece97d11
 34	363	0	esp-idf/main/CMakeFiles/spiffs_www_bin	56b7c9bd3c8afc21
+390	8948	5998022362041498	build.ninja	5fc566ace43b02d
+122	175	5996181395977207	bootloader-prefix/src/bootloader-stamp/bootloader-build	7a2dca29ece97d11
+122	175	5996181395977207	bootloader/bootloader.elf	7a2dca29ece97d11
+122	175	5996181395977207	bootloader/bootloader.bin	7a2dca29ece97d11
+122	175	5996181395977207	bootloader/bootloader.map	7a2dca29ece97d11
+127	473	5998022367275941	esp-idf/app_update/CMakeFiles/__idf_app_update.dir/esp_app_desc.c.obj	287e1fa6e0ca0e1f
+130	502	0	esp-idf/main/CMakeFiles/spiffs_www_bin	56b7c9bd3c8afc21
+477	537	5998022367921357	esp-idf/app_update/libapp_update.a	57caef206c86e0af
+128	573	5998022368280695	esp-idf/main/CMakeFiles/__idf_main.dir/moonlight.c.obj	9cb0919adc0a3bc6
+582	624	5998022368789422	esp-idf/main/libmain.a	c1373670284a7c68
+625	2059	5998022383013478	esp-idf/esp32/ld/esp32.project.ld	31d8910d27fa1de9
+2061	4907	5998022411523463	moonlight.elf	52e5d03319a1f45d
+4907	5198	5998022414513425	.bin_timestamp	3b950b3589f4468c

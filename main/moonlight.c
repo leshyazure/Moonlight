@@ -4,6 +4,7 @@
  *  Created on: 1 sty 2020
  *      Author: HP
  */
+#include <config.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
@@ -13,7 +14,7 @@
 #include "driver/adc.h"
 
 static const char *TAG = "moonlight";
-
+//old
 int LEDRed = 0;
 int LEDGreen = 1000;
 int LEDBlue = 1000;
@@ -23,6 +24,17 @@ int fadein = 4;
 int fadeout = 4;
 int threshold = 1000;
 int preview_time = 1;
+//new
+
+int redOn = RED_ON;
+int greenOn = GREEN_ON;
+int blueOn = BLUE_ON;
+int whiteOn = WHITE_ON;
+
+int redOff = RED_OFF;
+int greenOff = GREEN_OFF;
+int blueOff = BLUE_OFF;
+int whiteOff = WHITE_OFF;
 
 int getR()
 {
@@ -54,6 +66,11 @@ int getFadeout()
 int getDuration()
 {
 	return duration;
+}
+
+void setLEDOn(int r, int g, int b, int w)
+{
+
 }
 int measureAmbientLight()
 {
@@ -147,9 +164,6 @@ void configure_moonlight(
 	fadeout = fout;
 	threshold = thresh;
 	preview_time = prevtime;
-
-
-
 }
 
 
