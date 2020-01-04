@@ -33,13 +33,13 @@
 <div class="subheader"><h2>Standby color:</h2></div>
 <br>
 <div class="tooltip">
-  <input type="range" min="0" max="100" value="0" class="slider" id="redStandby"> 
+  <input type="range" min="0" max="300" value="0" class="slider" id="redStandby"> 
   <p class="red-standby">Red: <span id="redStandbyView"></span></p>
-    <input type="range" min="0" max="100" value="0" class="slider" id="greenStandby"> 
+    <input type="range" min="0" max="300" value="0" class="slider" id="greenStandby"> 
   <p class="green-standby">Green: <span id="greenStandbyView"></span></p>
-    <input type="range" min="0" max="100" value="0" class="slider" id="blueStandby"> 
+    <input type="range" min="0" max="300" value="0" class="slider" id="blueStandby"> 
   <p class="blue-standby">Blue: <span id="blueStandbyView"></span></p>
-      <input type="range" min="0" max="100" value="0" class="slider" id="whiteStandby"> 
+      <input type="range" min="0" max="300" value="0" class="slider" id="whiteStandby"> 
   <p class="white-standby">White: <span id="whiteStandbyView"></span></p>
   <span class="tooltiptext">This setting determines how controller works in standby mode, between motion detections. Values can be set to zero if you don't wan't any light, or to low values to get slightly, barely visible light.  </span></div>
 </div>
@@ -91,6 +91,12 @@
 
 $.get("/sensor/ldr", function(data){
 document.getElementById("lightLevel").innerHTML = data.measureLight;
+});
+$.get("/read/color", function(readColor){
+document.getElementById("redTargetView").innerHTML = readColor.rOn;
+document.getElementById("greenTargetView").innerHTML = readColor.gOn;
+document.getElementById("blueTargetView").innerHTML = readColor.bOn;
+document.getElementById("whiteTargetView").innerHTML = readColor.wOn;
 });
 
 setupColors = function() {

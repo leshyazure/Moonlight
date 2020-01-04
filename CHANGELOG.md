@@ -14,6 +14,7 @@
 
 ## Added
 
+- Standby light control (Controller can slightly glow when wait for motion detection)
 - Preview control on front end side
 
 ## Channged

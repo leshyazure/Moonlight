@@ -140,16 +140,35 @@ static esp_err_t setup_color_handler(httpd_req_t *req)
 
 	cJSON_Delete(root);
 	httpd_resp_sendstr(req, "Post control value successfully");
-
 	ESP_LOGI(REST_TAG, "Set PWM: Red = %d, Green = %d, Blue = %d, White = %d", rOn, gOn, bOn, wOn);
-	//	ESP_LOGI(REST_TAG, "Duration = %d, Fade in = %d, Fade out = %d", dur, fin, fout);
-
-	//configure_moonlight(red, green, blue, white, dur, fin, fout, 1000, 1);
 	setLEDOn(rOn, gOn, bOn, wOn);
+	setLEDOff(rOff, gOff, bOff, wOff);
 	previewColor();
 
 	return ESP_OK;
 }
+
+/* Handler for getting current color settings */
+static esp_err_t color_get_handler(httpd_req_t *req)
+{
+	int r = getROn();
+	int g = getGOn();
+	int b = getBOn();
+	int w = getWOn();
+	httpd_resp_set_type(req, "application/json");
+	cJSON *root = cJSON_CreateObject();
+
+	cJSON_AddNumberToObject(root, "rOn", r);
+	cJSON_AddNumberToObject(root, "gOn", g);
+	cJSON_AddNumberToObject(root, "bOn", b);
+	cJSON_AddNumberToObject(root, "wOn", w);
+	const char *sys_info = cJSON_Print(root);
+	httpd_resp_sendstr(req, sys_info);
+	free((void *)sys_info);
+	cJSON_Delete(root);
+	return ESP_OK;
+}
+
 
 
 /* Simple handler for getting system handler */
@@ -203,6 +222,15 @@ esp_err_t start_rest_server(const char *base_path)
 			.user_ctx = rest_context
 	};
 	httpd_register_uri_handler(server, &system_info_get_uri);
+
+	/* URI handler for fetching current color settings */
+	httpd_uri_t color_get_uri = {
+			.uri = "/read/color",
+			.method = HTTP_GET,
+			.handler = color_get_handler,
+			.user_ctx = rest_context
+	};
+	httpd_register_uri_handler(server, &color_get_uri);
 
 	/* URI handler for fetching current light level data */
 	httpd_uri_t ldr_data_get_uri = {

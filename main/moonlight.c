@@ -48,6 +48,32 @@ int getDuration()
 	return duration;
 }
 
+int getROn()
+{
+	return redOn;
+}
+int getGOn()
+{
+	return greenOn;
+}
+int getBOn()
+{
+	return blueOn;
+}
+int getWOn()
+{
+	return whiteOn;
+}
+int * getLEDOn()
+{
+	int  led[4];
+	led[0] = redOn;
+	led[1] = greenOn;
+	led[2] = blueOn;
+	led[3] = whiteOn;
+	return led;
+}
+
 void setLEDOn(int r, int g, int b, int w)
 {
 	redOn = r;
