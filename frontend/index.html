@@ -17,7 +17,7 @@
 <div class="slidecontainer">
 <div class="subheader"><h2>Target color:</h2></div>
 <br>
-
+<div class="tooltip">
   <input type="range" min="0" max="8000" value="0" class="slider" id="redTarget"> 
   <p class="red-target">Red: <span id="redTargetView"></span></p>
     <input type="range" min="0" max="8000" value="100" class="slider" id="greenTarget"> 
@@ -26,12 +26,13 @@
   <p class="blue-target">Blue: <span id="blueTargetView"></span></p>
       <input type="range" min="0" max="8000" value="0" class="slider" id="whiteTarget"> 
   <p class="white-target">White: <span id="whiteTargetView"></span></p>
+  <span class="tooltiptext">Target color ratio values. This color is set, when controller detect a motion.</span></div>
 </div>
 <br>
 <div class="slidecontainer">
 <div class="subheader"><h2>Standby color:</h2></div>
 <br>
-
+<div class="tooltip">
   <input type="range" min="0" max="100" value="0" class="slider" id="redStandby"> 
   <p class="red-standby">Red: <span id="redStandbyView"></span></p>
     <input type="range" min="0" max="100" value="0" class="slider" id="greenStandby"> 
@@ -40,6 +41,7 @@
   <p class="blue-standby">Blue: <span id="blueStandbyView"></span></p>
       <input type="range" min="0" max="100" value="0" class="slider" id="whiteStandby"> 
   <p class="white-standby">White: <span id="whiteStandbyView"></span></p>
+  <span class="tooltiptext">This setting determines how controller works in standby mode, between motion detections. Values can be set to zero if you don't wan't any light, or to low values to get slightly, barely visible light.  </span></div>
 </div>
 <br>
 <div class="threshold">
