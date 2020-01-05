@@ -1,7 +1,6 @@
 build/ linguist-detectable=false
 scheme/ linguist-detectable=false
-sdkconfig linguist-detectable=false
-.cproject linguist-detectable=false
-.project linguist-detectable=false
-main/Kconfig.projbuild linguist-detectable=false
-frontend/favicon.ico linguist-detectable=false
+frontend/README.md linguist-detectable=false
+README.md linguist-detectable=false
+CHANGELOG.md linguist-detectable=false
+partitions.csv linguist-detectable=false
