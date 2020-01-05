@@ -1,3 +1,11 @@
+/*
+ *
+ *  	Created on: 1 jan 2020
+ *      Author: Leshy Azure
+ *      www.azurescens.eu
+ *
+ */
+
 #include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -153,10 +161,15 @@ static esp_err_t color_get_handler(httpd_req_t *req)
 {
 
 	int* gOnPtr = getLEDOn();
+	int* gOffPtr = getLEDOff();
 	int rOn = gOnPtr[0];
+	int rOff = gOffPtr[0];
 	int gOn = gOnPtr[1];
+	int gOff = gOffPtr[1];
 	int bOn = gOnPtr[2];
+	int bOff = gOffPtr[2];
 	int wOn = gOnPtr[3];
+	int wOff = gOffPtr[3];
 	ESP_LOGI(REST_TAG, "Read PWM: Red = %d, Green = %d, Blue = %d, White = %d", rOn, gOn, bOn, wOn);
 	httpd_resp_set_type(req, "application/json");
 	cJSON *root = cJSON_CreateObject();
@@ -165,6 +178,10 @@ static esp_err_t color_get_handler(httpd_req_t *req)
 	cJSON_AddNumberToObject(root, "gOn", gOn);
 	cJSON_AddNumberToObject(root, "bOn", bOn);
 	cJSON_AddNumberToObject(root, "wOn", wOn);
+	cJSON_AddNumberToObject(root, "rOff", rOff);
+	cJSON_AddNumberToObject(root, "gOff", gOff);
+	cJSON_AddNumberToObject(root, "bOff", bOff);
+	cJSON_AddNumberToObject(root, "wOff", wOff);
 	const char *sys_info = cJSON_Print(root);
 	httpd_resp_sendstr(req, sys_info);
 	free((void *)sys_info);

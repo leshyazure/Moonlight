@@ -4,14 +4,14 @@
  *
  *	Default values & pin configuration
  *
- *   Created on: 4 sty 2020
+ *   	Created on: 4 jan 2020
  *      Author: Leshy Azure
  *      www.azurescens.eu
  *
  */
 
-#ifndef MAIN_CONFIG_H_
-#define MAIN_CONFIG_H_
+#ifndef CONFIG_H_
+#define CONFIG_H_
 
 // Photoresistor pin configuration
 #define PHOTORESISTOR ADC1_CHANNEL_7 // ADC channel 7 (GPIO 35)
@@ -36,12 +36,12 @@
 #define WHITE_OFF 0
 
 // Timing values
-#define DURATION 10
+#define DURATION 5
 #define COMMON_FADE_IN 5
 #define COMMON_FADE_OUT 5
 
 // Threshold
-#define THRESHOLD 1000
+#define THRESHOLD 1500
 
 // Preview
 #define ENABLE_PREVIEW true
@@ -49,4 +49,4 @@
 
 
 
-#endif /* MAIN_CONFIG_H_ */
+#endif /* CONFIG_H_ */

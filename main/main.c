@@ -1,5 +1,11 @@
 /*
-	Moonlight v1.0.2
+ *
+ *	Moonlight v1.0.2
+ *
+ *  	Created on: 29 dec 2020
+ *      Author: Leshy Azure
+ *      www.azurescens.eu
+ *
  */
 #include <moonlight.h>
 #include <config.h>
@@ -136,20 +142,28 @@ static void motion_detection_task(void* arg)
 	for(;;) {
 		if(xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
 
-			int duration = getDuration() * 1000;
 			int phtres = adc1_get_raw(PHOTORESISTOR);
-
+			int thr = getThreshold();
 			gpio_set_level(GPIO_NUM_2, 1);
-			ESP_LOGI(TAG, "Motion detected, photoresistor: %d.", phtres);
-			fade_in();
-			vTaskDelay(1000 / portTICK_RATE_MS);
+			ESP_LOGI(TAG, "Motion detected, current light level: %d (Threshold: %d).", phtres, thr);
+			vTaskDelay(500 / portTICK_RATE_MS);
 			gpio_set_level(GPIO_NUM_2, 0);
-			vTaskDelay((getFadeIn() * 1000) / portTICK_RATE_MS);
-			ESP_LOGI(TAG, "Wait %d seconds", getDuration());
-			vTaskDelay((duration - 1000)/ portTICK_RATE_MS);
 
-			fade_out();
+			if (phtres < thr) {
 
+				ESP_LOGI(TAG, "Below threshold, start fading.");
+				fade_in();
+				vTaskDelay((getFadeIn() * 1000) / portTICK_RATE_MS);
+				int duration = getDuration() * 1000;
+				ESP_LOGI(TAG, "Wait %d seconds", getDuration());
+				vTaskDelay((duration - 1000)/ portTICK_RATE_MS);
+				ESP_LOGI(TAG, "Fading out.");
+				fade_out();
+
+			} else {
+
+				ESP_LOGI(TAG, "Above threshold, no action.");
+			}
 			//			uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
 			//			ESP_LOGI(TAG, "High water mark %d", uxHighWaterMark);
 

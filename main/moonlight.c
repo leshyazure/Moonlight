@@ -1,8 +1,10 @@
 /*
  * moonlight.c
  *
- *  Created on: 1 sty 2020
- *      Author: HP
+ *  	Created on: 1 jan 2020
+ *      Author: Leshy Azure
+ *      www.azurescens.eu
+ *
  */
 #include <config.h>
 #include "freertos/FreeRTOS.h"
@@ -47,23 +49,11 @@ int getDuration()
 {
 	return duration;
 }
+int getThreshold()
+{
+	return threshold;
+}
 
-int getROn()
-{
-	return redOn;
-}
-int getGOn()
-{
-	return greenOn;
-}
-int getBOn()
-{
-	return blueOn;
-}
-int getWOn()
-{
-	return whiteOn;
-}
 int* getLEDOn()
 {
 	static int led[4];
@@ -71,6 +61,16 @@ int* getLEDOn()
 	led[1] = greenOn;
 	led[2] = blueOn;
 	led[3] = whiteOn;
+	return led;
+}
+
+int* getLEDOff()
+{
+	static int led[4];
+	led[0] = redOff;
+	led[1] = greenOff;
+	led[2] = blueOff;
+	led[3] = whiteOff;
 	return led;
 }
 
@@ -94,7 +94,6 @@ int measureAmbientLight()
 	return adc1_get_raw(PHOTORESISTOR);
 }
 
-
 void fade_in()
 {
 	/*
@@ -102,8 +101,7 @@ void fade_in()
 	int green_ms = green_fade * 1000;
 	int blue_ms = blue_fade * 1000;
 	int white_ms = white_fade * 1000;
-*/
-
+	 */
 
 	ESP_LOGI(TAG, "Fade in to R:%d G:%d B:%d W:%d, with time %d", redOn, greenOn, blueOn, whiteOn, fadeIn);
 	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, redOn, (fadeIn * 1000));
@@ -125,8 +123,8 @@ void fade_out()
 	int green_ms = green_fade * 1000;
 	int blue_ms = blue_fade * 1000;
 	int white_ms = white_fade * 1000;
-*/
-	ESP_LOGI(TAG, "Fade out to R:%d G:%d B:%d W:%d, with time %d ", redOff, greenOn, blueOn, whiteOn, fadeOut);
+	 */
+	ESP_LOGI(TAG, "Fade out to R:%d G:%d B:%d W:%d, with time %d ", redOff, greenOff, blueOff, whiteOff, fadeOut);
 	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, redOff, (fadeOut * 1000));
 	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_1, greenOff, (fadeOut * 1000));
 	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_2, blueOff, (fadeOut * 1000));
@@ -163,28 +161,3 @@ void previewColor()
 		ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_3);
 	}
 }
-/*
-void configure_moonlight(
-		int red,
-		int green,
-		int blue,
-		int white,
-		int dur,
-		int fin,
-		int fout,
-		int thresh,
-		int prevtime) {
-
-	LEDRed = red;
-	LEDGreen = green;
-	LEDBlue = blue;
-	LEDWhite = white;
-	duration = dur;
-	fadein = fin;
-	fadeout = fout;
-	threshold = thresh;
-	preview_time = prevtime;
-}
-*/
-
-
