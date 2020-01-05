@@ -152,19 +152,19 @@ static esp_err_t setup_color_handler(httpd_req_t *req)
 static esp_err_t color_get_handler(httpd_req_t *req)
 {
 
-	int* gptr = getLEDOn();
-	int r = gptr[0];
-	int g = gptr[1];
-	int b = gptr[2];
-	int w = gptr[3];
-	ESP_LOGI(REST_TAG, "Read PWM: Red = %d, Green = %d, Blue = %d, White = %d", r, g, b, w);
+	int* gOnPtr = getLEDOn();
+	int rOn = gOnPtr[0];
+	int gOn = gOnPtr[1];
+	int bOn = gOnPtr[2];
+	int wOn = gOnPtr[3];
+	ESP_LOGI(REST_TAG, "Read PWM: Red = %d, Green = %d, Blue = %d, White = %d", rOn, gOn, bOn, wOn);
 	httpd_resp_set_type(req, "application/json");
 	cJSON *root = cJSON_CreateObject();
 
-	cJSON_AddNumberToObject(root, "rOn", r);
-	cJSON_AddNumberToObject(root, "gOn", g);
-	cJSON_AddNumberToObject(root, "bOn", b);
-	cJSON_AddNumberToObject(root, "wOn", w);
+	cJSON_AddNumberToObject(root, "rOn", rOn);
+	cJSON_AddNumberToObject(root, "gOn", gOn);
+	cJSON_AddNumberToObject(root, "bOn", bOn);
+	cJSON_AddNumberToObject(root, "wOn", wOn);
 	const char *sys_info = cJSON_Print(root);
 	httpd_resp_sendstr(req, sys_info);
 	free((void *)sys_info);

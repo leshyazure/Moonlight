@@ -136,20 +136,17 @@ static void motion_detection_task(void* arg)
 	for(;;) {
 		if(xQueueReceive(gpio_evt_queue, &io_num, portMAX_DELAY)) {
 
-			int duration_in_s = getDuration() * 1000;
+			int duration = getDuration() * 1000;
 			int phtres = adc1_get_raw(PHOTORESISTOR);
 
 			gpio_set_level(GPIO_NUM_2, 1);
 			ESP_LOGI(TAG, "Motion detected, photoresistor: %d.", phtres);
-
-
 			fade_in();
-
 			vTaskDelay(1000 / portTICK_RATE_MS);
 			gpio_set_level(GPIO_NUM_2, 0);
 			vTaskDelay((getFadeIn() * 1000) / portTICK_RATE_MS);
 			ESP_LOGI(TAG, "Wait %d seconds", getDuration());
-			vTaskDelay((duration_in_s - 1000)/ portTICK_RATE_MS);
+			vTaskDelay((duration - 1000)/ portTICK_RATE_MS);
 
 			fade_out();
 
