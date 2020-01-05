@@ -10,7 +10,7 @@
 
 void previewColor();
 
-int * getLEDOn();
+int* getLEDOn();
 int getROn();
 int getGOn();
 int getBOn();

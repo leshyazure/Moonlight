@@ -94,9 +94,13 @@ document.getElementById("lightLevel").innerHTML = data.measureLight;
 });
 $.get("/read/color", function(readColor){
 document.getElementById("redTargetView").innerHTML = readColor.rOn;
+document.getElementById("redTarget").value = readColor.rOn;
 document.getElementById("greenTargetView").innerHTML = readColor.gOn;
+document.getElementById("greenTarget").value = readColor.gOn;
 document.getElementById("blueTargetView").innerHTML = readColor.bOn;
+document.getElementById("blueTarget").value = readColor.bOn;
 document.getElementById("whiteTargetView").innerHTML = readColor.wOn;
+document.getElementById("whiteTarget").value = readColor.wOn;
 });
 
 setupColors = function() {

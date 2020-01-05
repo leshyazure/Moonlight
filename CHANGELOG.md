@@ -2,7 +2,7 @@
 
 ## ToDo
 
-- Add threshold control on frontend
+- Read all values from ESP32
 - Rewrite tasks
 - Add gamma correction for linear brightness change.
 
@@ -10,14 +10,20 @@
 
 - Unexpected value changes (Check interrupts and unhandled expections)
 
+## [1.0.4] - 2020-01-05
+
+### Added
+
+- Read color values from ESP32
+
 ## [1.0.3] - 2020-01-04
 
-## Added
+### Added
 
 - Standby light control (Controller can slightly glow when wait for motion detection)
 - Preview control on front end side
 
-## Channged
+### Channged
 
 - Rewrited control functions
 

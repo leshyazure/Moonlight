@@ -151,10 +151,13 @@ static esp_err_t setup_color_handler(httpd_req_t *req)
 /* Handler for getting current color settings */
 static esp_err_t color_get_handler(httpd_req_t *req)
 {
-	int r = getROn();
-	int g = getGOn();
-	int b = getBOn();
-	int w = getWOn();
+
+	int* gptr = getLEDOn();
+	int r = gptr[0];
+	int g = gptr[1];
+	int b = gptr[2];
+	int w = gptr[3];
+	ESP_LOGI(REST_TAG, "Read PWM: Red = %d, Green = %d, Blue = %d, White = %d", r, g, b, w);
 	httpd_resp_set_type(req, "application/json");
 	cJSON *root = cJSON_CreateObject();
 
