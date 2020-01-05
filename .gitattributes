@@ -1,2 +1,7 @@
 build/ linguist-detectable=false
 scheme/ linguist-detectable=false
+sdkconfig linguist-detectable=false
+.cproject linguist-detectable=false
+.project linguist-detectable=false
+main/Kconfig.projbuild linguist-detectable=false
+frontend/favicon.ico linguist-detectable=false
