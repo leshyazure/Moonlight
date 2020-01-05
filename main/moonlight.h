@@ -23,6 +23,7 @@ int getThreshold();
 bool getPreviewEnable();
 int getPreviewTime();
 
+void setThreshold(int thr);
 void setTiming(int fin, int fout, int dur);
 void setLEDOn(int r, int g, int b, int w);
 void setLEDOff(int r, int g, int b, int w);

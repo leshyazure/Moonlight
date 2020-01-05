@@ -2,6 +2,7 @@
 $.get("/sensor/ldr", function(data){
 document.getElementById("lightLevel").innerHTML = data.measureLight;
 });
+
 $.get("/read/color", function(readColor){
 document.getElementById("redTargetView").innerHTML = readColor.rOn;
 document.getElementById("redTarget").value = readColor.rOn;
@@ -12,10 +13,20 @@ document.getElementById("blueTarget").value = readColor.bOn;
 document.getElementById("whiteTargetView").innerHTML = readColor.wOn;
 document.getElementById("whiteTarget").value = readColor.wOn;
 });
+
 $.get("/read/timing", function(readTimings){
 document.getElementById("duration").value = readTimings.duration;
 document.getElementById("fadeIn").value = readTimings.fadeIn;
 document.getElementById("fadeOut").value = readTimings.fadeOut;
+});
+
+$.get("/read/threshold", function(readThreshold){
+document.getElementById("threshold").value = readThreshold.threshold;
+});
+
+$.get("/read/preview", function(readPreview){
+document.getElementById("previewEnable").checked = readPreview.enable;
+document.getElementById("previewTime").value = readPreview.time;
 });
 
 setupColors = function() {

@@ -157,7 +157,6 @@ static void motion_detection_task(void* arg)
 				int duration = getDuration() * 1000;
 				ESP_LOGI(TAG, "Wait %d seconds", getDuration());
 				vTaskDelay((duration - 1000)/ portTICK_RATE_MS);
-				ESP_LOGI(TAG, "Fading out.");
 				fade_out();
 
 			} else {

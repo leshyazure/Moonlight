@@ -7,7 +7,7 @@
 - Add gamma correction for linear brightness change.
 
 ## FixMe
-
+- Correct standby color getter.
 - Unexpected value changes (Check interrupts and unhandled expections)
 
 ## [1.0.4] - 2020-01-05

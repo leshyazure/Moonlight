@@ -18,7 +18,7 @@
 #include "driver/ledc.h"
 
 static const char *REST_TAG = "server";
-#define REST_CHECK(a, str, goto_tag, ...)                                              \
+#define REST_CHECK(a, str, goto_tag, ...)                                                  \
 		do                                                                                 \
 		{                                                                                  \
 			if (!(a))                                                                      \
@@ -191,6 +191,39 @@ static esp_err_t set_timing_handler(httpd_req_t *req)
 
 }
 
+/* Handler for threshold control */
+
+static esp_err_t set_threshold_handler(httpd_req_t *req)
+{
+	int total_len = req->content_len;
+	int cur_len = 0;
+	char *buf = ((rest_server_context_t *)(req->user_ctx))->scratch;
+	int received = 0;
+	if (total_len >= SCRATCH_BUFSIZE) {
+		/* Respond with 500 Internal Server Error */
+		httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "content too long");
+		return ESP_FAIL;
+	}
+	while (cur_len < total_len) {
+		received = httpd_req_recv(req, buf + cur_len, total_len);
+		if (received <= 0) {
+			/* Respond with 500 Internal Server Error */
+			httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Failed to post control value");
+			return ESP_FAIL;
+		}
+		cur_len += received;
+	}
+	buf[total_len] = '\0';
+	cJSON *root = cJSON_Parse(buf);
+	int thr = cJSON_GetObjectItem(root, "threshold")->valueint;
+	cJSON_Delete(root);
+	httpd_resp_sendstr(req, "Post control values successfully");
+	ESP_LOGI(REST_TAG, "Set threshold to %d", thr);
+	setThreshold(thr);
+	return ESP_OK;
+
+}
+
 /* Handler for preview control */
 
 static esp_err_t set_preview_handler(httpd_req_t *req)
@@ -219,9 +252,9 @@ static esp_err_t set_preview_handler(httpd_req_t *req)
 	bool enable;
 	cJSON *enable_json = cJSON_GetObjectItem(root, "enable");
 	if (cJSON_IsTrue(enable_json) == 0) {
-		enable = true;
-	} else {
 		enable = false;
+	} else {
+		enable = true;
 	}
 	setPreview(enable, time);
 	cJSON_Delete(root);
@@ -262,6 +295,22 @@ static esp_err_t color_get_handler(httpd_req_t *req)
 	cJSON_Delete(root);
 	return ESP_OK;
 }
+
+/* Handler for getting threshold settings */
+static esp_err_t threshold_get_handler(httpd_req_t *req)
+{
+
+	int thr = getThreshold();
+	httpd_resp_set_type(req, "application/json");
+	cJSON *root = cJSON_CreateObject();
+	cJSON_AddNumberToObject(root, "threshold", thr);
+	const char *sys_info = cJSON_Print(root);
+	httpd_resp_sendstr(req, sys_info);
+	free((void *)sys_info);
+	cJSON_Delete(root);
+	return ESP_OK;
+}
+
 
 /* Handler for getting timing settings */
 static esp_err_t timing_get_handler(httpd_req_t *req)
@@ -344,6 +393,7 @@ esp_err_t start_rest_server(const char *base_path)
 
 	httpd_handle_t server = NULL;
 	httpd_config_t config = HTTPD_DEFAULT_CONFIG();
+	config.max_uri_handlers = 14;
 	config.uri_match_fn = httpd_uri_match_wildcard;
 
 	ESP_LOGI(REST_TAG, "Starting HTTP Server");
@@ -367,6 +417,16 @@ esp_err_t start_rest_server(const char *base_path)
 	};
 	httpd_register_uri_handler(server, &color_get_uri);
 
+	/* URI handler for fetching threshold settings */
+	httpd_uri_t threshold_get_uri = {
+			.uri = "/read/threshold",
+			.method = HTTP_GET,
+			.handler = threshold_get_handler,
+			.user_ctx = rest_context
+	};
+	httpd_register_uri_handler(server, &threshold_get_uri);
+
+
 	/* URI handler for fetching timing settings */
 	httpd_uri_t timing_get_uri = {
 			.uri = "/read/timing",
@@ -375,6 +435,16 @@ esp_err_t start_rest_server(const char *base_path)
 			.user_ctx = rest_context
 	};
 	httpd_register_uri_handler(server, &timing_get_uri);
+
+	/* URI handler for fetching preview settings */
+	httpd_uri_t preview_get_uri = {
+			.uri = "/read/preview",
+			.method = HTTP_GET,
+			.handler = preview_get_handler,
+			.user_ctx = rest_context
+	};
+	httpd_register_uri_handler(server, &preview_get_uri);
+
 
 	/* URI handler for fetching current light level data */
 	httpd_uri_t ldr_data_get_uri = {
@@ -402,6 +472,15 @@ esp_err_t start_rest_server(const char *base_path)
 			.user_ctx = rest_context
 	};
 	httpd_register_uri_handler(server, &timing_post_uri);
+
+	/* URI handler for threshold control */
+	httpd_uri_t threshold_post_uri = {
+			.uri = "/setup/threshold",
+			.method = HTTP_POST,
+			.handler = set_threshold_handler,
+			.user_ctx = rest_context
+	};
+	httpd_register_uri_handler(server, &threshold_post_uri);
 
 	/* URI handler for timing control */
 	httpd_uri_t preview_post_uri = {

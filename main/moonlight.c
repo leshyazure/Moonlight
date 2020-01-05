@@ -105,6 +105,12 @@ void setTiming(int fin, int fout, int dur)
 	duration = dur;
 
 }
+
+void setThreshold(int thr)
+{
+	threshold = thr;
+}
+
 void setPreview(bool en, int time)
 {
 	enablePreview = en;
@@ -125,7 +131,7 @@ void fade_in()
 	int white_ms = white_fade * 1000;
 	 */
 
-	ESP_LOGI(TAG, "Fade in to R:%d G:%d B:%d W:%d, with time %d", redOn, greenOn, blueOn, whiteOn, fadeIn);
+	ESP_LOGI(TAG, "Fade in to R:%d G:%d B:%d W:%d, with time %d seconds", redOn, greenOn, blueOn, whiteOn, fadeIn);
 	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, redOn, (fadeIn * 1000));
 	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_1, greenOn, (fadeIn * 1000));
 	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_2, blueOn, (fadeIn * 1000));
@@ -146,7 +152,7 @@ void fade_out()
 	int blue_ms = blue_fade * 1000;
 	int white_ms = white_fade * 1000;
 	 */
-	ESP_LOGI(TAG, "Fade out to R:%d G:%d B:%d W:%d, with time %d ", redOff, greenOff, blueOff, whiteOff, fadeOut);
+	ESP_LOGI(TAG, "Fade out to R:%d G:%d B:%d W:%d, with time %d seconds", redOff, greenOff, blueOff, whiteOff, fadeOut);
 	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_0, redOff, (fadeOut * 1000));
 	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_1, greenOff, (fadeOut * 1000));
 	ledc_set_fade_with_time(LEDC_HIGH_SPEED_MODE,LEDC_CHANNEL_2, blueOff, (fadeOut * 1000));
