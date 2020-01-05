@@ -4,6 +4,7 @@
  *      Author: Leshy Azure
  *      www.azurescens.eu
  */
+#include <stdbool.h>
 
 #ifndef MOONLIGHT_H_
 #define MOONLIGHT_H_
@@ -16,12 +17,16 @@ int measureAmbientLight();
 int* getLEDOn();
 int* getLEDOff();
 int getFadeIn();
-int getFadeout();
+int getFadeOut();
 int getDuration();
 int getThreshold();
+bool getPreviewEnable();
+int getPreviewTime();
 
+void setTiming(int fin, int fout, int dur);
 void setLEDOn(int r, int g, int b, int w);
 void setLEDOff(int r, int g, int b, int w);
+void setPreview(bool en, int time);
 
 #endif /* MOONLIGHT_H_ */
 

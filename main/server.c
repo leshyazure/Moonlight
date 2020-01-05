@@ -147,7 +147,7 @@ static esp_err_t setup_color_handler(httpd_req_t *req)
 	//  int fout = cJSON_GetObjectItem(root, "fadeout")->valueint;
 
 	cJSON_Delete(root);
-	httpd_resp_sendstr(req, "Post control value successfully");
+	httpd_resp_sendstr(req, "Post control values successfully");
 	ESP_LOGI(REST_TAG, "Set PWM: Red = %d, Green = %d, Blue = %d, White = %d", rOn, gOn, bOn, wOn);
 	setLEDOn(rOn, gOn, bOn, wOn);
 	setLEDOff(rOff, gOff, bOff, wOff);
@@ -155,6 +155,81 @@ static esp_err_t setup_color_handler(httpd_req_t *req)
 
 	return ESP_OK;
 }
+
+/* Handler for timing control */
+
+static esp_err_t set_timing_handler(httpd_req_t *req)
+{
+	int total_len = req->content_len;
+	int cur_len = 0;
+	char *buf = ((rest_server_context_t *)(req->user_ctx))->scratch;
+	int received = 0;
+	if (total_len >= SCRATCH_BUFSIZE) {
+		/* Respond with 500 Internal Server Error */
+		httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "content too long");
+		return ESP_FAIL;
+	}
+	while (cur_len < total_len) {
+		received = httpd_req_recv(req, buf + cur_len, total_len);
+		if (received <= 0) {
+			/* Respond with 500 Internal Server Error */
+			httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Failed to post control value");
+			return ESP_FAIL;
+		}
+		cur_len += received;
+	}
+	buf[total_len] = '\0';
+	cJSON *root = cJSON_Parse(buf);
+	int dur = cJSON_GetObjectItem(root, "duration")->valueint;
+	int fin = cJSON_GetObjectItem(root, "fadein")->valueint;
+	int fout = cJSON_GetObjectItem(root, "fadeout")->valueint;
+	cJSON_Delete(root);
+	httpd_resp_sendstr(req, "Post control values successfully");
+	ESP_LOGI(REST_TAG, "Set Timing: Fade in = %d, Fade out = %d, Duration = %d", fin, fout, dur);
+	setTiming(fin, fout, dur);
+	return ESP_OK;
+
+}
+
+/* Handler for preview control */
+
+static esp_err_t set_preview_handler(httpd_req_t *req)
+{
+	int total_len = req->content_len;
+	int cur_len = 0;
+	char *buf = ((rest_server_context_t *)(req->user_ctx))->scratch;
+	int received = 0;
+	if (total_len >= SCRATCH_BUFSIZE) {
+		/* Respond with 500 Internal Server Error */
+		httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "content too long");
+		return ESP_FAIL;
+	}
+	while (cur_len < total_len) {
+		received = httpd_req_recv(req, buf + cur_len, total_len);
+		if (received <= 0) {
+			/* Respond with 500 Internal Server Error */
+			httpd_resp_send_err(req, HTTPD_500_INTERNAL_SERVER_ERROR, "Failed to post control value");
+			return ESP_FAIL;
+		}
+		cur_len += received;
+	}
+	buf[total_len] = '\0';
+	cJSON *root = cJSON_Parse(buf);
+	int time = cJSON_GetObjectItem(root, "time")->valueint;
+	bool enable;
+	cJSON *enable_json = cJSON_GetObjectItem(root, "enable");
+	if (cJSON_IsTrue(enable_json) == 0) {
+		enable = true;
+	} else {
+		enable = false;
+	}
+	setPreview(enable, time);
+	cJSON_Delete(root);
+	httpd_resp_sendstr(req, "Post control values successfully");
+	return ESP_OK;
+
+}
+
 
 /* Handler for getting current color settings */
 static esp_err_t color_get_handler(httpd_req_t *req)
@@ -170,10 +245,9 @@ static esp_err_t color_get_handler(httpd_req_t *req)
 	int bOff = gOffPtr[2];
 	int wOn = gOnPtr[3];
 	int wOff = gOffPtr[3];
-	ESP_LOGI(REST_TAG, "Read PWM: Red = %d, Green = %d, Blue = %d, White = %d", rOn, gOn, bOn, wOn);
+
 	httpd_resp_set_type(req, "application/json");
 	cJSON *root = cJSON_CreateObject();
-
 	cJSON_AddNumberToObject(root, "rOn", rOn);
 	cJSON_AddNumberToObject(root, "gOn", gOn);
 	cJSON_AddNumberToObject(root, "bOn", bOn);
@@ -189,6 +263,47 @@ static esp_err_t color_get_handler(httpd_req_t *req)
 	return ESP_OK;
 }
 
+/* Handler for getting timing settings */
+static esp_err_t timing_get_handler(httpd_req_t *req)
+{
+
+	int fadeIn = getFadeIn();
+	int fadeOut = getFadeOut();
+	int duration = getDuration();
+
+	httpd_resp_set_type(req, "application/json");
+	cJSON *root = cJSON_CreateObject();
+
+	cJSON_AddNumberToObject(root, "fadeIn", fadeIn);
+	cJSON_AddNumberToObject(root, "fadeOut", fadeOut);
+	cJSON_AddNumberToObject(root, "duration", duration);
+
+	const char *sys_info = cJSON_Print(root);
+	httpd_resp_sendstr(req, sys_info);
+	free((void *)sys_info);
+	cJSON_Delete(root);
+	return ESP_OK;
+}
+
+/* Handler for getting preview settings */
+static esp_err_t preview_get_handler(httpd_req_t *req)
+{
+
+	int time = getPreviewTime();
+	bool enable = getPreviewEnable();
+
+	httpd_resp_set_type(req, "application/json");
+	cJSON *root = cJSON_CreateObject();
+
+	cJSON_AddNumberToObject(root, "time", time);
+	cJSON_AddBoolToObject(root, "enable", enable);
+
+	const char *sys_info = cJSON_Print(root);
+	httpd_resp_sendstr(req, sys_info);
+	free((void *)sys_info);
+	cJSON_Delete(root);
+	return ESP_OK;
+}
 
 
 /* Simple handler for getting system handler */
@@ -252,6 +367,15 @@ esp_err_t start_rest_server(const char *base_path)
 	};
 	httpd_register_uri_handler(server, &color_get_uri);
 
+	/* URI handler for fetching timing settings */
+	httpd_uri_t timing_get_uri = {
+			.uri = "/read/timing",
+			.method = HTTP_GET,
+			.handler = timing_get_handler,
+			.user_ctx = rest_context
+	};
+	httpd_register_uri_handler(server, &timing_get_uri);
+
 	/* URI handler for fetching current light level data */
 	httpd_uri_t ldr_data_get_uri = {
 			.uri = "/sensor/ldr",
@@ -269,6 +393,24 @@ esp_err_t start_rest_server(const char *base_path)
 			.user_ctx = rest_context
 	};
 	httpd_register_uri_handler(server, &setup_post_uri);
+
+	/* URI handler for timing control */
+	httpd_uri_t timing_post_uri = {
+			.uri = "/setup/timing",
+			.method = HTTP_POST,
+			.handler = set_timing_handler,
+			.user_ctx = rest_context
+	};
+	httpd_register_uri_handler(server, &timing_post_uri);
+
+	/* URI handler for timing control */
+	httpd_uri_t preview_post_uri = {
+			.uri = "/setup/preview",
+			.method = HTTP_POST,
+			.handler = set_preview_handler,
+			.user_ctx = rest_context
+	};
+	httpd_register_uri_handler(server, &preview_post_uri);
 
 	/* URI handler for getting web server files */
 	httpd_uri_t common_get_uri = {

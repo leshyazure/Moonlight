@@ -54,6 +54,16 @@ int getThreshold()
 	return threshold;
 }
 
+bool getPreviewEnable()
+{
+	return enablePreview;
+}
+
+int getPreviewTime()
+{
+	return previewTime;
+}
+
 int* getLEDOn()
 {
 	static int led[4];
@@ -87,6 +97,18 @@ void setLEDOff(int r, int g, int b, int w)
 	greenOff = g;
 	blueOff = b;
 	whiteOff = w;
+}
+void setTiming(int fin, int fout, int dur)
+{
+	fadeIn = fin;
+	fadeOut = fout;
+	duration = dur;
+
+}
+void setPreview(bool en, int time)
+{
+	enablePreview = en;
+	previewTime = time;
 }
 
 int measureAmbientLight()

@@ -61,14 +61,14 @@
 
 <label for="duration">Duration:</label>
 <div class="tooltip">
-<input id="duration" type="number" min="1" max="600" value="5" class="inputNumber"><span class="tooltiptext">Light duration. Can't be shorter than any fade time.</span></div><br>
+<input id="duration" type="number" min="1" max="600" value="10" class="inputNumber"><span class="tooltiptext">Light duration. Can't be shorter than any fade time.</span></div><br>
 <label for="fadeIn">Fade in:</label>
 <div class="tooltip">
-<input id="fadeIn" type="number" min="1" max="15" value="5" class="inputNumber">
+<input id="fadeIn" type="number" min="1" max="15" value="10" class="inputNumber">
 <span class="tooltiptext">Fade in duration. It doesn't increase total light duration.</span></div><br>
 <label for="fadeOut">Fade out:</label>
 <div class="tooltip">
-<input id="fadeOut" type="number" min="1" max="15" value="5" class="inputNumber">
+<input id="fadeOut" type="number" min="1" max="15" value="10" class="inputNumber">
 <span class="tooltiptext">Fade out duration. It doesn't increase total light duration.</span></div><br>   
 </div>
 <br>
@@ -101,6 +101,11 @@ document.getElementById("blueTargetView").innerHTML = readColor.bOn;
 document.getElementById("blueTarget").value = readColor.bOn;
 document.getElementById("whiteTargetView").innerHTML = readColor.wOn;
 document.getElementById("whiteTarget").value = readColor.wOn;
+});
+$.get("/read/timing", function(readTimings){
+document.getElementById("duration").value = readTimings.duration;
+document.getElementById("fadeIn").value = readTimings.fadeIn;
+document.getElementById("fadeOut").value = readTimings.fadeOut;
 });
 
 setupColors = function() {
